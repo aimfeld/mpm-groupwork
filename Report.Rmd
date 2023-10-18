@@ -1,0 +1,22 @@
+---
+title: "Group Project for Applied Machine Learning and Predictive Modelling 1"
+author: "Michael Jung, Michelle Peter & Adrian Imfeld"
+date: \today
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: true
+urlcolor: blue
+---
+```{r child = 'Knitr_setup.Rmd'}
+```
+
+\newpage
+
+```{r child = 'Introduction.Rmd'}
+```
+```{r child = 'Data_preparation.Rmd'}
+```
+```{r child = 'Conclusion.Rmd'}
+```

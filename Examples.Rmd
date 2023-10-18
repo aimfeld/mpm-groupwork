@@ -1,0 +1,27 @@
+---
+output: pdf_document
+urlcolor: blue
+---
+
+```{r child = 'Knitr_setup.Rmd'}
+```
+
+# Examples
+
+By default, neither code nor results are shown in the PDF.
+
+```{r}
+2 + 4
+```
+
+Show results by adding `{r results = TRUE}, but not code:
+
+```{r results = TRUE}
+3 + 5
+```
+
+Show code and results by adding `{r echo = TRUE, results = TRUE}:
+
+```{r echo = TRUE, results = TRUE}
+7 + 8
+```

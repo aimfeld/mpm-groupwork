@@ -1,0 +1,9 @@
+
+```{r include = FALSE}
+# Include this setup at the beginning of each Rmd file so you can render individual chapters and the whole document
+# with consistent knittr settings.
+
+library(knitr)
+# By default, code (echo = FALSE) and output (results = FALSE) are not shown.
+opts_chunk$set(message = FALSE, echo = FALSE, results = FALSE, warning = FALSE)
+```

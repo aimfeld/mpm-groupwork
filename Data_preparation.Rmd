@@ -1,0 +1,7 @@
+---
+output: pdf_document
+urlcolor: blue
+---
+```{r child = 'Knitr_setup.Rmd'}
+```
+# Data preparation
