@@ -4,4 +4,24 @@ urlcolor: blue
 ---
 ```{r child = 'Knitr_setup.Rmd'}
 ```
+```{r}
+library(tidyverse)
+library(knitr)
+```
+
 # Data preparation
+
+```{r results = TRUE}
+df_games <- read.csv('data/games.csv')
+# Remove unnecessary columns
+df_games <- df_games %>% select(
+    -c(Estimated.owners, About.the.game, Reviews, Header.image,
+       Website, Support.url, Support.email, Metacritic.url, Notes, Screenshots, Movies))
+
+kable(head(df_games %>% select(c(AppID, Name, Release.date, Price, Metacritic.score)), 5))
+```
+
+```{r}
+write.csv(df_games, 'data/games_clean.csv', row.names = FALSE)
+```
+
