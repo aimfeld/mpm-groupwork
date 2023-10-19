@@ -1,5 +1,5 @@
 ---
-output: pdf_document
+output: html_document
 urlcolor: blue
 ---
 ```{r child = 'Knitr_setup.Rmd'}
