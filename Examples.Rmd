@@ -1,5 +1,7 @@
 ---
-output: html_document
+output:
+  html_document:
+    code_folding: hide
 urlcolor: blue
 ---
 
@@ -8,20 +10,25 @@ urlcolor: blue
 
 # Examples
 
-By default, neither code nor results are shown in the PDF.
+Cell rendered with default chunk settings:
 
 ```{r}
 2 + 4
 ```
 
-Show results by adding `{r results = TRUE}, but not code:
+Hide results by adding `{r results = FALSE}`:
 
-```{r results = TRUE}
+```{r results = FALSE}
 3 + 5
 ```
 
-Show code and results by adding `{r echo = TRUE, results = TRUE}:
+Hide code and results by adding `{r echo = FALSE, results = FALSE}`:
 
-```{r echo = TRUE, results = TRUE}
+```{r echo = FALSE, results = FALSE}
 7 + 8
+```
+
+Unfold html by default by adding `{r class.source = 'fold-show'}`:
+```{r class.source = 'fold-show'}
+11 + 12
 ```
