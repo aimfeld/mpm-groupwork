@@ -15,20 +15,29 @@ urlcolor: blue
 \newpage
 
 ```{r child = 'Introduction.Rmd'}
+# Adrian
 ```
 ```{r child = 'Data_preparation.Rmd'}
+# Adrian (and Michelle and Mike)
 ```
 ```{r child = 'Linear_model.Rmd'}
+# Michelle
 ```
 ```{r child = 'Generalized_linear_model.Rmd'}
+# Mike
 ```
 ```{r child = 'Generalized_additive_model.Rmd'}
+# Mike
 ```
 ```{r child = 'Neural_network.Rmd'}
+# Adrian + Mike
 ```
 ```{r child = 'Support_vector_machine.Rmd'}
+# Adrian
 ```
 ```{r child = 'Optimization.Rmd'}
+# Mike
 ```
 ```{r child = 'Conclusion.Rmd'}
+# Michelle
 ```
