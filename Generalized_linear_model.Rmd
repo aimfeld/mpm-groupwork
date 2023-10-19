@@ -1,0 +1,13 @@
+---
+output: pdf_document
+urlcolor: blue
+---
+
+```{r child = 'Knitr_setup.Rmd'}
+```
+
+# Generalized linear model (GLM)
+
+## Poisson
+
+## Binomial

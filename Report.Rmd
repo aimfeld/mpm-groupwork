@@ -18,5 +18,17 @@ urlcolor: blue
 ```
 ```{r child = 'Data_preparation.Rmd'}
 ```
+```{r child = 'Linear_model.Rmd'}
+```
+```{r child = 'Generalized_linear_model.Rmd'}
+```
+```{r child = 'Generalized_additive_model.Rmd'}
+```
+```{r child = 'Neural_network.Rmd'}
+```
+```{r child = 'Support_vector_machine.Rmd'}
+```
+```{r child = 'Optimization.Rmd'}
+```
 ```{r child = 'Conclusion.Rmd'}
 ```

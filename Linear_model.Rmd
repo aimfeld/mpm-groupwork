@@ -1,0 +1,9 @@
+---
+output: pdf_document
+urlcolor: blue
+---
+
+```{r child = 'Knitr_setup.Rmd'}
+```
+
+# Linear model
