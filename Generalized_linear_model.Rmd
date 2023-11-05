@@ -18,7 +18,7 @@ Source: https://en.wikipedia.org/wiki/Generalized_linear_model
 
 ## Poisson
 
-The Poisson regression model is used for count data. Some interesting count data we can look at in our data set is: 
+The Poisson regression model can be used to look at count data. Some interesting count data we can look at in our data set is: 
 
 - Peak concurrent users: Which factors contribute to a high peak of concurrent users?
 - DLC count: DLC - downloadable content represents extra content in form of new missions, maps or items, usually released after the game has launched. We can try and find out which types of games tend to have more DLC.
@@ -43,26 +43,34 @@ Zero inflation: Count data often have more zeros than expected under a Poisson d
 
 Large counts: The Poisson model works best with large counts. With small counts, the distribution becomes skewed and the model may not fit well.))
 
+
 ((Prose))
 
 To fit a Poisson Model in R we will use the glm() function, where we can specify the distribution to be used with family = "poisson".
 
-##DLC
+###DLC
 
-Let us first take a look at what influences the DLC.count variable. We want to look at which variables lead to higher amounts of DLC. In recent years DLC has come under fire, for developers being lazy, trying to perform cash grabs and witholding content on release in order to release it as DLC later down the road.
+Let us first take a look at what influences the DLC.count variable. We want to look at which variables lead to higher amounts of DLC. In recent years DLC has come under fire, for developers being lazy, trying to perform cash grabs by withholding content on release in order to release it as DLC later down the road.
 
 ```{r}
 
 games.clean <- read.csv('data/games_clean.csv')
 
 
-#release date crashes the model, becuase it must first be converted, however is it count data?
-dlc.model <- glm(DLC.count ~ Price + Metacritic.score + User.score + Positive + Negative + Genres, family = "poisson", data = games.clean)
-summary(dlc.model)
+#release date crashes the model, because it must first be converted, however is it count data?
+dlc.model1 <- glm(DLC.count ~ Price + Metacritic.score + User.score + Positive + Negative, family = "poisson", data = games.clean)
+summary(dlc.model1)
 
 
 ```
+Interpreting the summary is not straightforward ((...why...))
+However we can see that an increase in the DLC count variable is correlated to less positive reviews, hinting at our assumption from earlier that games with more DLC are rated worse.
 
+
+((boxplot to see if data is even poisson))
+
+Next we will try and look at what variables could influence the peak concurrent users (Peak CCU).
+This is a metric 
 
 ```{r}
 ccu.model2 <- glm(Peak.CCU ~  Price + Metacritic.score + Average.playtime.two.weeks, family = "poisson", data = games.clean)
@@ -71,6 +79,56 @@ summary(ccu.model2)
 
 
 
-
 ## Binomial
+
+This dataset contains a few interesting areas to apply a binomial model.
+PC games are usually developed for Windows, with Mac and Linux operating systems considered second rate.
+
+Let us look at what predictors could be relevant to see if a game supports Linux or not.
+Applying the following binomial logistic regression 
+
+```{r}
+#data preparation for binomial model
+
+# 1. convert True and False in the Linux variable to 0 and 1
+games.clean$Linux <- ifelse(games.clean$Linux == "True", 1, 0)
+
+# 2. convert release date to numeric value for the model
+games.clean$Release.date <- as.Date(games.clean$Release.date, format = "%b %d, %Y")
+ref.date <- as.Date("2000-01-01")
+games.clean$Release.date <- as.numeric(games.clean$Release.date - ref.date)
+
+
+
+
+
+
+```
+
+
+
+```{r}
+
+#model >> developers is too much data
+linux.model3 <- glm(Linux ~ Release.date + Metacritic.score + Price, family = "binomial", data = games.clean)
+
+
+
+
+```
+
+
+```{r}
+
+##Playground binomial > to be deleted
+sum(is.na(games.clean$Release.date))
+sum(is.na(games.clean$Linux))
+table(games.clean$Linux)
+games.clean$Linux
+games.clean$Release.date
+games.clean$Price
+
+```
+
+
 

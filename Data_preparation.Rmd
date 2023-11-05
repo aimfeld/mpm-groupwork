@@ -30,3 +30,4 @@ write.csv(df_games, 'data/games_clean.csv', row.names = FALSE)
 #((Kommentare MJ))
 - Datum in ein Date format für R umwandeln
 - Genres aufteilen von einer Liste in individuelle (dummy)variablen
+- Developers sind zu viele Daten für lineare Modelle, kann man diese gruppieren nach Grösse oder Region?
