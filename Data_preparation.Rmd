@@ -14,6 +14,8 @@ library(stringr)
 
 # Data preparation
 
+The Steam Games Dataset was downloaded from [Kaggle](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset) and contains 76987 games.
+
 First, let's load the data and remove unnecessary columns to reduce the size of the data set. We will also convert the release date to a suitable date format and convert some columns from string to boolean.
 
 ```{r}
@@ -60,6 +62,17 @@ games$Lang.Italian <- as.integer(sapply(games$Supported.languages, function(x) g
 # Remove the original column
 games <- select(games, -Supported.languages)
 ```
+Some numeric columns contain 0 instead of NA values, which we will replace with NA. Otherwise, the mean of these columns would be biased. This is somewhat poorly documented, but hints can be found in the code and the discussion section of the [Kaggle Data Card](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset/data).
+
+```{r}
+for (col in c("Peak.CCU", "Metacritic.score", "User.score", "Positive", "Negative",
+              "Average.playtime.forever", "Average.playtime.two.weeks",
+              "Median.playtime.forever", "Median.playtime.two.weeks")) {
+    # Replace 0 with NA in the specified column
+    games[[col]][games[[col]] == 0] <- NA
+}
+```
+
 
 Finally, we store the cleaned and enriched data set for further analysis.
 
