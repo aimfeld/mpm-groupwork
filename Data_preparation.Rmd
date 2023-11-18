@@ -22,7 +22,7 @@ First, let's load the data and remove unnecessary columns to reduce the size of 
 games <- read.csv('data/games.csv')
 # Remove unnecessary columns
 games <- games %>% select(
-    -c(Estimated.owners, About.the.game, Reviews, Header.image, Full.audio.languages,
+    -c(Estimated.owners, About.the.game, Reviews, Header.image, Full.audio.languages, Developers,
        Website, Support.url, Support.email, Metacritic.url, Notes, Screenshots, Movies))
 
 # Convert release date to date format
@@ -73,6 +73,20 @@ for (col in c("Peak.CCU", "Metacritic.score", "User.score", "Positive", "Negativ
 }
 ```
 
+A few publishers produce many games, while most publishers only produce a few games. We will create a new column that contains the number of games produced by each publisher.
+
+```{r}
+publisher.counts <- sort(table(games$Publishers), decreasing=TRUE)
+kable(head(publisher.counts, 10))
+```
+```{r}
+games <- games %>%
+    group_by(Publishers) %>%
+    mutate(Publishers.count = n()) %>%
+    ungroup()
+
+games$Publishers.count[games$Publishers == ""] <- NA
+```
 
 Finally, we store the cleaned and enriched data set for further analysis.
 
