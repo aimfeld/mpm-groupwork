@@ -10,38 +10,27 @@ urlcolor: blue
 
 # Generalized linear model (GLM)
 
-Generalized linear models (GLMs) are to be seen as a flexible extension of ordinary linear regression models. They are useful when dealing with response variables that have an error distribution that is not normally distributed, i.e. the Gaussian distribution. In this chapter we will dive into our dataset and look at two possible GLMs, to see which insights we can gather from our data using them. We will take a look at the Poisson regression model and the Binomial regression model.
+Generalized Linear Models (GLMs) are statistical models that can be used to predict the relationship between a response variable and one or more predictor variables. When analyzing our video game data, GLMs can be used to predict the relationship between a game's success and various factors such as the game's genre, platform, and critical reception. 
 
+Suppose we are interested in predicting which factors influence a given game's chances of receiving a good user rating. In this case, we could consider the user score as our response variable and we would look at data such as price, popularity and genre as our predictor variables.
 
-Source: https://en.wikipedia.org/wiki/Generalized_linear_model
+GLMs are useful because they can handle a wide range of data, including binary, count, and continuous data. Here are some examples of each type of data:
+
+- Binary data:      Values such as "True" / "False" or 1/0. An example for binary data would be if a certain language supported or not.
+- Count data:       Integer values (0,1,2,3...) that represent a number of occurrences of something. An example for count data would be the amount of DLCs a game has
+- Continuous data:  Any value within a given range. An example for continuous data would be the amount of time a person has spent playing a certain game
+
 
 
 ## Poisson
 
-The Poisson regression model can be used to look at count data. Some interesting count data we can look at in our data set is: 
+The Poisson model is a type of GLM that is used to analyze count data. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables
+
+Some interesting count data we can look at in our data set is: 
 
 - Peak concurrent users: Which factors contribute to a high peak of concurrent users?
 - DLC count: DLC - downloadable content represents extra content in form of new missions, maps or items, usually released after the game has launched. We can try and find out which types of games tend to have more DLC.
-- Achievements
 
-
-ChatGPT: (((The key assumption of a Poisson distribution is that the mean is equal to the variance. If this assumption is violated (i.e., if there is overdispersion or underdispersion in your data), you might need to consider a different model, such as Negative Binomial regression.)))
-
-ChatGPT: ((When using the Poisson model with count data, there are several assumptions and considerations you need to keep in mind:
-
-Mean equals variance: The Poisson distribution assumes that the mean is equal to the variance. This is known as equidispersion. If the variance is greater than the mean, it’s called overdispersion, and if it’s less than the mean, it’s called underdispersion. Both of these situations can lead to inefficient and biased estimates.
-
-Independence of events: The Poisson model assumes that the events (counts) are independent of each other. If this assumption is violated, it can lead to biased estimates.
-
-Rate of occurrence is constant: The Poisson model assumes that the rate at which events occur is constant over time or space.
-
-No simultaneous events: The Poisson model assumes that two events cannot occur at exactly the same instant.
-
-Appropriate offset variable: If you’re modeling rates rather than counts, you need to include an appropriate offset variable in your model.
-
-Zero inflation: Count data often have more zeros than expected under a Poisson distribution. This is known as zero inflation and can lead to biased estimates.
-
-Large counts: The Poisson model works best with large counts. With small counts, the distribution becomes skewed and the model may not fit well.))
 
 
 ((Prose))
@@ -59,7 +48,7 @@ games.clean <- read.csv('data/games_clean.csv', colClasses = column.classes)
 
 
 #release date crashes the model, because it must first be converted, however is it count data?
-dlc.model1 <- glm(DLC.count ~ Price + Metacritic.score + User.score + Positive + Negative, family = "poisson", data = games.clean)
+dlc.model1 <- glm(DLC.count ~ Price + Metacritic.score + Positive + Negative, family = "poisson", data = games.clean)
 summary(dlc.model1)
 
 
@@ -104,16 +93,7 @@ games.clean$Release.date <- as.numeric(games.clean$Release.date - ref.date)
 
 #model >> developers is too much data
 linux.model3 <- glm(Linux ~ Release.date + Metacritic.score + Price, family = "binomial", data = games.clean)
+summary(linux.model3)
 ```
-
-
-```{r}
-
-##Playground binomial > to be deleted
-sum(is.na(games.clean$Release.date))
-sum(is.na(games.clean$Linux))
-table(games.clean$Linux)
-```
-
 
 
