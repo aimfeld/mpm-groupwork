@@ -7,24 +7,68 @@ urlcolor: blue
 ```{r child = 'Knitr_setup.Rmd'}
 ```
 ```{r}
-library(tidyverse)
+library(dplyr)
 library(knitr)
+library(stringr)
 ```
 
 # Data preparation
 
-```{r results = TRUE}
-df_games <- read.csv('data/games.csv')
-# Remove unnecessary columns
-df_games <- df_games %>% select(
-    -c(Estimated.owners, About.the.game, Reviews, Header.image,
-       Website, Support.url, Support.email, Metacritic.url, Notes, Screenshots, Movies))
-
-kable(head(df_games %>% select(c(AppID, Name, Release.date, Price, Metacritic.score)), 5))
-```
+First, let's load the data and remove unnecessary columns to reduce the size of the data set. We will also convert the release date to a suitable date format and convert some columns from string to boolean.
 
 ```{r}
-write.csv(df_games, 'data/games_clean.csv', row.names = FALSE)
+games <- read.csv('data/games.csv')
+# Remove unnecessary columns
+games <- games %>% select(
+    -c(Estimated.owners, About.the.game, Reviews, Header.image, Full.audio.languages,
+       Website, Support.url, Support.email, Metacritic.url, Notes, Screenshots, Movies))
+
+# Convert release date to date format
+games$Release.date <- as.Date(games$Release.date, format="%b %d, %Y")
+
+# Convert booleans to 1 and 0 which is easier to handle for modelling
+games$Windows <- ifelse(games$Windows == "True", 1, 0)
+games$Mac <- ifelse(games$Mac == "True", 1, 0)
+games$Linux <- ifelse(games$Linux == "True", 1, 0)
+```
+
+After some cleanup, the data looks like this (only a small subset of variables is shown):
+
+```{r}
+kable(head(games %>% select(c(AppID, Name, Release.date, Price, Metacritic.score)), 5))
+```
+
+From the data given, we also compute additional variables that might be useful for our analysis, such as the number of supported languages.
+
+```{r}
+# Count the number of languages
+games$Lang.count <- str_count(games$Supported.languages, ",") + 1
+
+# Adjusting for empty brackets
+games$Lang.count[games$Supported.languages == "[]"] <- 0
+
+# Check for specific language support of the most common languages
+games$Lang.English <- as.integer(sapply(games$Supported.languages, function(x) grepl("English", x)))
+games$Lang.Spanish <- as.integer(sapply(games$Supported.languages, function(x) grepl("Spanish", x)))
+games$Lang.Chinese <- as.integer(sapply(games$Supported.languages, function(x) grepl("Chinese", x)))
+games$Lang.Russian <- as.integer(sapply(games$Supported.languages, function(x) grepl("Russian", x)))
+games$Lang.German <- as.integer(sapply(games$Supported.languages, function(x) grepl("German", x)))
+games$Lang.Portuguese <- as.integer(sapply(games$Supported.languages, function(x) grepl("Portuguese", x)))
+games$Lang.French <- as.integer(sapply(games$Supported.languages, function(x) grepl("French", x)))
+games$Lang.Italian <- as.integer(sapply(games$Supported.languages, function(x) grepl("Italian", x)))
+
+# Remove the original column
+games <- select(games, -Supported.languages)
+```
+
+Finally, we store the cleaned and enriched data set for further analysis.
+
+```{r}
+write.csv(games, 'data/games_clean.csv', row.names = FALSE)
+```
+
+```{r include = FALSE}
+summary(games)
 ```
 
 #((Kommentare MJ))

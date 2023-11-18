@@ -54,7 +54,8 @@ Let us first take a look at what influences the DLC.count variable. We want to l
 
 ```{r}
 
-games.clean <- read.csv('data/games_clean.csv')
+column.classes <- c(Release.date = "Date")
+games.clean <- read.csv('data/games_clean.csv', colClasses = column.classes)
 
 
 #release date crashes the model, because it must first be converted, however is it count data?
@@ -90,19 +91,11 @@ Applying the following binomial logistic regression
 ```{r}
 #data preparation for binomial model
 
-# 1. convert True and False in the Linux variable to 0 and 1
-games.clean$Linux <- ifelse(games.clean$Linux == "True", 1, 0)
 
 # 2. convert release date to numeric value for the model
-games.clean$Release.date <- as.Date(games.clean$Release.date, format = "%b %d, %Y")
+
 ref.date <- as.Date("2000-01-01")
 games.clean$Release.date <- as.numeric(games.clean$Release.date - ref.date)
-
-
-
-
-
-
 ```
 
 
@@ -111,10 +104,6 @@ games.clean$Release.date <- as.numeric(games.clean$Release.date - ref.date)
 
 #model >> developers is too much data
 linux.model3 <- glm(Linux ~ Release.date + Metacritic.score + Price, family = "binomial", data = games.clean)
-
-
-
-
 ```
 
 
@@ -124,10 +113,6 @@ linux.model3 <- glm(Linux ~ Release.date + Metacritic.score + Price, family = "b
 sum(is.na(games.clean$Release.date))
 sum(is.na(games.clean$Linux))
 table(games.clean$Linux)
-games.clean$Linux
-games.clean$Release.date
-games.clean$Price
-
 ```
 
 
