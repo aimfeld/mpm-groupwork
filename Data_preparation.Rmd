@@ -17,13 +17,13 @@ library(stringr)
 
 The Steam Games Dataset was downloaded from [Kaggle](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset) and contains 76987 games.
 
-First, let's load the data and remove unnecessary columns to reduce the size of the data set. We will also convert the release date to a suitable date format and convert some columns from string to boolean.
+First, let's load the data and remove unnecessary columns to reduce the size of the data set. We will also convert the release date to a suitable date format and convert some columns from string to boolean. Also, the esimtated owner ranges are split into min and max values, and the mean is computed. Finally, we compute the estimated revenue for each game by multiplying the mean number of owners with the price. These are rough estimates, since Valve does not publish the exact number of owners for each game.
 
 ```{r}
 games <- read.csv('data/games.csv')
 # Remove unnecessary columns
 games <- games %>% select(
-    -c(Estimated.owners, About.the.game, Reviews, Header.image, Full.audio.languages, Developers,
+    -c(About.the.game, Reviews, Header.image, Full.audio.languages, Developers,
        Website, Support.url, Support.email, Metacritic.url, Notes, Screenshots, Movies))
 
 # Convert release date to date format
@@ -33,8 +33,20 @@ games$Release.date <- as.Date(games$Release.date, format="%b %d, %Y")
 games$Windows <- ifelse(games$Windows == "True", 1, 0)
 games$Mac <- ifelse(games$Mac == "True", 1, 0)
 games$Linux <- ifelse(games$Linux == "True", 1, 0)
-```
 
+# Split the 'Estimated.owners' column into min and max values
+owners.split <- strsplit(games$Estimated.owners, " - ")
+games$Owners.min <- sapply(owners.split, function(x) as.numeric(x[1]))
+games$Owners.max <- sapply(owners.split, function(x) as.numeric(x[2]))
+
+# Compute the mean of the min and max values
+games$Owners.mean <- rowMeans(cbind(games$Owners.min, games$Owners.max))
+
+# Remove the original column
+games <- select(games, -Estimated.owners)
+
+games$Revenue <- games$Owners.mean * games$Price
+```
 After some cleanup, the data looks like this (only a small subset of variables is shown):
 
 ```{r}
