@@ -45,7 +45,10 @@ games$Owners.mean <- rowMeans(cbind(games$Owners.min, games$Owners.max))
 # Remove the original column
 games <- select(games, -Estimated.owners)
 
+# Compute the estimated revenue for each game
 games$Revenue <- games$Owners.mean * games$Price
+# Revenue is extremely right-skewed, so we will use the log of revenue instead
+games <- games %>% mutate(Revenue.log = ifelse(Revenue > 0, log(Revenue), NA))
 ```
 After some cleanup, the data looks like this (only a small subset of variables is shown):
 

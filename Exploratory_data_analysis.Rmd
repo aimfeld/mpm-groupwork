@@ -1,0 +1,38 @@
+---
+output:
+  html_document:
+    code_folding: hide
+urlcolor: blue
+---
+
+```{r child = 'Knitr_setup.Rmd'}
+```
+```{r}
+library(knitr)
+library(dplyr)
+```
+# Exploratory data analysis (EDA)
+
+Before we dive into data analysis, we need to do some exploratory data analysis (EDA) to get a sense of what the data look like. This will help us to understand the data and to identify any potential problems with the data.
+
+```{r}
+column.classes <- c(Release.date = "Date")
+games <- read.csv('data/games_clean.csv', colClasses = column.classes)
+```
+
+## Distribution of key variables
+
+The game revenue distribution is extremely right skewed. This is not surprising as most games do not make much money, but a few games generate massive revenue. We therefore need to log-transform the revenue variable to make the distribution more symmetric, although we still see some right-skewness.
+
+```{r}
+mfrow <- par(mfrow = c(1, 2))
+hist(games$Revenue.log, main = "Distribution of revenue", xlab = "Log revenue $")
+boxplot(games$Revenue.log, main = "Distribution of revenue", ylab = "Log revenue $")
+```
+```{r include = FALSE}
+# Show extreme right-skewness of revenue distribution
+summary(games[games$Revenue > 0, c("Revenue", "Revenue.log")])
+```
+
+
+

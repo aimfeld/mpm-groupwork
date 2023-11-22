@@ -9,3 +9,15 @@ urlcolor: blue
 ```
 
 # Support vector machine (SVM)
+```{r}
+column.classes <- c(Release.date = "Date")
+games <- read.csv('data/games_clean.csv', colClasses = column.classes)
+```
+
+```{r}
+# Show top 5 games by Revenue:
+games[order(-games$Revenue),][1:5,]
+```
+
+```{r}
+```

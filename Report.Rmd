@@ -22,7 +22,11 @@ urlcolor: blue
 ```
 
 ```{r child = 'Data_preparation.Rmd'}
-# Adrian (and Michelle and Mike)
+# Adrian
+```
+
+```{r child = 'Exploratory_data_analysis.Rmd'}
+# Adrian
 ```
 
 ```{r child = 'Linear_model.Rmd'}
