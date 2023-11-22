@@ -47,8 +47,14 @@ games <- select(games, -Estimated.owners)
 
 # Compute the estimated revenue for each game
 games$Revenue <- games$Owners.mean * games$Price
+
+# Add log-transforms for extremely right-skewed variables
 # Revenue is extremely right-skewed, so we will use the log of revenue instead
-games <- games %>% mutate(Revenue.log = ifelse(Revenue > 0, log(Revenue), NA))
+games <- games %>%
+    mutate(Revenue.log = ifelse(Revenue > 0, log(Revenue), NA)) %>%
+    mutate(Peak.CCU.log = ifelse(Peak.CCU > 0, log(Peak.CCU), NA)) %>%
+    mutate(Positive.log = ifelse(Positive > 0, log(Positive), NA)) %>%
+    mutate(Negative.log = ifelse(Negative > 0, log(Negative), NA))
 ```
 After some cleanup, the data looks like this (only a small subset of variables is shown):
 

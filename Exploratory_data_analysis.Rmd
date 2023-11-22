@@ -22,17 +22,39 @@ games <- read.csv('data/games_clean.csv', colClasses = column.classes)
 
 ## Distribution of key variables
 
-The game revenue distribution is extremely right skewed. This is not surprising as most games do not make much money, but a few games generate massive revenue. We therefore need to log-transform the revenue variable to make the distribution more symmetric, although we still see some right-skewness.
+Let's have a look at the distribution of the key variables in our dataset: revenue, peak concurrent users (CCU), metacritic score, user score, positive votes, and negative votes.
 
 ```{r}
-mfrow <- par(mfrow = c(1, 2))
-hist(games$Revenue.log, main = "Distribution of revenue", xlab = "Log revenue $")
-boxplot(games$Revenue.log, main = "Distribution of revenue", ylab = "Log revenue $")
+par(mfrow = c(2, 3))
+boxplot(games$Revenue, main = "Revenue")
+boxplot(games$Metacritic.score, main = "Metacritic score")
+boxplot(games$User.score, main = "User score")
+boxplot(games$Positive, main = "Positive votes")
+boxplot(games$Negative, main = "Negative votes")
+boxplot(games$Peak.CCU, main = "Peak CCU")
 ```
+
+It is evident that the revenue, peak CCU, positive votes, and negative votes variables are extremely right skewed. This is not surprising as most games do not attract much attention, but a few games generate massive revenue and user engagement. By using a log-transform, we can make the distribution of these variables more symmetric, although we still see some right-skewness. This may be important for modelling later on.
+
+```{r}
+par(mfrow = c(1, 4))
+boxplot(games$Revenue.log, main = "Revenue (log)")
+boxplot(games$Positive.log, main = "Positive votes (log)")
+boxplot(games$Negative.log, main = "Negative votes (log)")
+boxplot(games$Peak.CCU.log, main = "Peak CCU (log)")
+```
+
 ```{r include = FALSE}
 # Show extreme right-skewness of revenue distribution
 summary(games[games$Revenue > 0, c("Revenue", "Revenue.log")])
 ```
 
+## Relationship between key variables
 
+Using pair plots on the key variables, we can see that there is a positive relationship between revenue and peak CCU, metacritic score, positive votes and negative votes. While it seems counter-intuitive that there is a positive relationship between revenue and negative votes, this is likely due to the fact that games that attract more users are likely to receive more negative votes as well. The relationship between revenue and user score is less clear, but a higher user score seems to be associated lower negative votes.
+
+
+```{r}
+pairs(games[, c("Revenue.log", "Peak.CCU.log", "Metacritic.score", "User.score", "Positive.log", "Negative.log")])
+```
 
