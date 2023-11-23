@@ -55,6 +55,7 @@ Using pair plots on the key variables, we can see that there is a positive relat
 
 
 ```{r}
-pairs(games[, c("Revenue.log", "Peak.CCU.log", "Metacritic.score", "User.score", "Positive.log", "Negative.log")])
+features <- c("Revenue.log", "Peak.CCU.log", "Metacritic.score", "User.score", "Positive.log", "Negative.log")
+pairs(games[, features], panel=panel.smooth, lwd=3)
 ```
 
