@@ -16,8 +16,8 @@ library(dplyr)
 Before we dive into data analysis, we need to do some exploratory data analysis (EDA) to get a sense of what the data look like. This will help us to understand the data and to identify any potential problems with the data.
 
 ```{r}
-column.classes <- c(Release.date = "Date")
-games <- read.csv('data/games_clean.csv', colClasses = column.classes)
+column_classes <- c(Release.date = "Date")
+games <- read.csv('data/games_clean.csv', colClasses = column_classes)
 ```
 
 ## Distribution of key variables
