@@ -8,9 +8,51 @@ urlcolor: blue
 ```{r child = 'Knitr_setup.Rmd'}
 ```
 
+```{r}
+library(tidyverse)
+library(e1071)
+library(caret)
+```
+
+
 # Support vector machine (SVM)
 ```{r}
-# column.classes <- c(Release.date = "Date")
-# games <- read.csv('data/games_clean.csv', colClasses = column.classes)
+column_classes <- c(Release.date = "Date")
+games <- read.csv('data/games_clean.csv', colClasses = column_classes)
+```
+
+```{r}
+features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log")
+# features <- c("Peak.CCU.log", "Metacritic.score")
+columns <- c(features, "Revenue.log")
+Xy <- games[, columns]
+Xy <- na.omit(Xy)
+```
+
+```{r}
+set.seed(42)
+indices <- createDataPartition(Xy$Revenue.log, p=.85, list = F)
+train <- Xy[indices, ]
+test <- Xy[-indices, ]
+```
+```{r}
+games_svm <- svm(
+    Revenue.log ~ Peak.CCU.log + Metacritic.score + Positive.log + Negative.log,
+    train, kernel = "linear", scale = TRUE
+)
+summary(games_svm)
+```
+```{r}
+pred <- predict(games_svm, test)
+plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
+
+mse <- mean((test$Revenue.log - pred)^2)
+mae <- MAE(test$Revenue.log, pred)
+rmse <- RMSE(test$Revenue.log, pred)
+r2 <- R2(test$Revenue.log, pred, form <- "traditional")
+corr <- cor(test$Revenue.log, pred)
+ 
+cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
+    "RMSE:", rmse, "\n", "R-squared:", r2, "\n", "Correlation:", corr)
 ```
 
