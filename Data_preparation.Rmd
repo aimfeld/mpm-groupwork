@@ -95,7 +95,7 @@ for (col in c("Peak.CCU", "Metacritic.score", "User.score", "Positive", "Negativ
 }
 ```
 
-A few publishers produce many games, while most publishers only produce a few games. We will create a new column that contains the number of games produced by each publisher.
+A few publishers produce many games, while most publishers only produce a few games. We will create a new column that contains the number of games produced by each publisher. These are the top 3 publishers:
 
 ```{r}
 games <- games %>%
@@ -106,10 +106,10 @@ games <- games %>%
 
 # Show the top publishers
 publisher.counts <- sort(table(games$Publishers), decreasing=TRUE)
-kable(head(publisher.counts, 10))
+kable(head(publisher.counts, 3))
 ```
 
-We will also create dummy variables for the top 10 genres and categories. The tags are somewhat redundant with the genres, so we will not use them.
+We will also create dummy variables for the top 10 genres and categories (shown below are the top 3). The tags are somewhat redundant with the genres, so we will not use them.
 
 ```{r}
 # Split the 'Genres' column into individual genres and count them
@@ -126,7 +126,7 @@ for(genre in head(top.genres$Genres)) {
     games[[paste0("Genre.", genre)]] <- as.integer(grepl(genre, games$Genres))
 }
 
-kable(top.genres)
+kable(head(top.genres, 3))
 ```
 
 ```{r}
@@ -143,7 +143,7 @@ for(category in top.categories$Categories) {
     games[[paste0("Category.", category)]] <- as.integer(grepl(category, games$Categories))
 }
 
-kable(top.categories)
+kable(head(top.categories, 3))
 ```
 
 ```{r include = FALSE }
