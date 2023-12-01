@@ -14,7 +14,6 @@ library(e1071)
 library(caret)
 ```
 
-
 # Support vector machine (SVM)
 ```{r}
 col_classes <- c(Release.date = "Date")
@@ -22,7 +21,8 @@ games <- read.csv('data/games_clean.csv', colClasses = col_classes)
 ```
 
 ```{r}
-features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log")
+features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count",
+              "Genre.Indie", "Genre.Action", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")
 cols <- c(features, "Revenue.log")
 Xy <- games[, cols]
 
@@ -38,16 +38,26 @@ indices <- createDataPartition(Xy$Revenue.log, p = .85, list = F)
 train <- Xy[indices,]
 test <- Xy[-indices,]
 ```
+
 ```{r}
-games_svm <- svm(
-    Revenue.log ~ Peak.CCU.log + Metacritic.score + Positive.log + Negative.log,
-    train, kernel = "linear", scale = TRUE
+grid <- expand.grid(C = c(0.01, 0.1, 1, 10))
+trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
+formula <- as.formula(paste("Revenue.log ~", paste(features, collapse = " + ")))
+svm_grid <- train(
+    formula, data = train, method = "svmLinear",
+    trControl = trctrl,
+    preProcess = c("center", "scale"),
+    tuneGrid = grid
 )
-summary(games_svm)
+plot(svm_grid)
+
+svm_grid
 ```
+
 ```{r}
-pred <- predict(games_svm, test)
+pred <- predict(svm_grid, test)
 plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
+abline(lm(pred ~ test$Revenue.log), 1, col = "red")
 
 mse <- mean((test$Revenue.log - pred)^2)
 mae <- MAE(test$Revenue.log, pred)
