@@ -8,11 +8,14 @@ urlcolor: blue
 ```{r child = 'Knitr_setup.Rmd'}
 ```
 
+((Filter games metacritic score, only look at games that have a metacritic score))
+((use crossvalidation))
+
 # Generalized linear model (GLM)
 
-Generalized Linear Models (GLMs) are statistical models that can be used to predict the relationship between a response variable and one or more predictor variables. When analyzing our video game data, GLMs can be used to predict the relationship between a game's success and various factors such as the game's genre, platform, and critical reception. 
+Generalized Linear Models (GLMs) are statistical models that can be used to predict the relationship between a response variable and one or more predictor variables. For our video game dataset, GLMs can be used to predict the relationship between a game's success and various factors such as the game's genre, platform, and critical reception. 
 
-Suppose we are interested in predicting which factors influence a given game's chances of receiving a good user rating. In this case, we could consider the user score as our response variable and we would look at data such as price, popularity and genre as our predictor variables.
+Suppose we are interested in predicting which factors influence a given game's chances of receiving a good user rating. In this case, we could consider the user score as our response variable and we could look at data such as price, popularity and genre as our predictor variables.
 
 GLMs are useful because they can handle a wide range of data, including binary, count, and continuous data. Here are some examples of each type of data:
 
@@ -24,42 +27,72 @@ GLMs are useful because they can handle a wide range of data, including binary, 
 
 ## Poisson
 
-The Poisson model is a type of GLM that is used to analyze count data. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables. Since we can't rely on our data being normally distributed and all relationships being linear, it may make sense to explore the data using a Poisson model.
+The Poisson model is a type of GLM that is used to analyze *count data*. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables. Since we can't rely on our data being normally distributed and all relationships being linear, it may make sense to explore the data using a Poisson model.
 
 Some interesting count data we can look at in our data set is: 
 
 - Peak concurrent users: Which factors contribute to a high peak of concurrent users?
 - DLC count: DLC - downloadable content represents extra content in form of new missions, maps or items, usually released after the game has launched. We can try and find out which types of games tend to have more DLC.
 
-
-
-((Prose))
-((Filter games metacritic score, only look at games that have a metacritic score))
-((use crossvalidation))
-
 To fit a Poisson Model in R we will use the glm() function, where we can specify the distribution to be used with family = "poisson".
+
+*Important note:* In the exploratory data analysis we have seen that some of our data is very skewed an thus we log-transformed some variables. This process can change a count variable to a continuous variable and thus no longer making it suitable for a poisson model. Lets say a game has 150 positive reviews. The log-transformed value will no longer be 150 but perhaps 3.4568 which is no longer a count. 
+
+Now there are workarounds to this such as rounding to the nearest integer, but this comes with loss of information.
+After exploring what affects the revenue and peak concurrent users variables we receive inconclusive information with a poisson model. We thus make the decision to stick only to actual count data.
+
+
 
 ### DLC
 
-Let us first take a look at what influences the DLC.count variable. We want to look at which variables lead to higher amounts of DLC. In recent years DLC has come under fire, for developers being lazy, trying to perform cash grabs by withholding content on release in order to release it as DLC later down the road.
+In recent years DLC has come under fire. The argument is that developers are trying to perform cash grabs by withholding content on release in order to release it as DLC later down the road and make more money. This can lead to negative reviews and have negative impact on sales. However not all DLC is like this so let's explore.
+
+
+Let us first take a look at what influences the DLC.count variable. We want to look at which variables lead to higher amounts of DLC. We look at the influence of Price, Metacritic.score, Category.Single.player and Category.Multi.player
+
 
 ```{r}
-
+# loading the data & reading in the date as a date format
 column.classes <- c(Release.date = "Date")
 games.clean <- read.csv('data/games_clean.csv', colClasses = column.classes)
 
 
-#release date crashes the model, because it must first be converted, however is it count data?
-dlc.model1 <- glm(DLC.count ~ Price + Metacritic.score + Release.date + Positive + Negative, family = "poisson", data = games.clean)
-summary(dlc.model1)
+#modelling
+dlc.model <- glm(DLC.count ~ Price + Metacritic.score + Category.Single.player + Category.Multi.player, family = "poisson", data = games.clean)
+summary(dlc.model)
+```
+Interpreting the summary of a Poisson model is not as straightforward as the interpretation of linear models.
+The output estimates need further treatment, which we will not go into here. However a general trend is visible.
+We can see that games categorized as 'Multiplayer" seemingly have a positive effect on the amount DLC, with games categorized as "Singleplayer" having a negative effect on the amount of DLC. The higher the orice and the higher the metacritic score seems to have a small positive effect on the amount of DLC in this model.
+
+
+Let us now look at User sentiment regarding DLC.
+The question we are trying to answer is: Do users like DLC or not?
+
+
+```{r}
+dlc.review <- glm(DLC.count ~ Positive.log + Negative.log, family = "poisson", data = games.clean)
+summary(dlc.review)
+
+```
+We can see that there seem to be a positive relationship with negative reviews and DLC. For each negative review the DLC count variable increases by an amount. We can see this amount is larger than for positive reviews.
+
+
+Let us now look at which of our top genres are most likely to have DLC.
+
+```{r}
+
+dlc.genres <- glm(DLC.count ~ Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "poisson", data = games.clean)
+summary(dlc.genres)
 
 
 ```
-Interpreting the summary is not straightforward ((...why...))
-However we can see that an increase in the DLC count variable is correlated to less positive reviews, hinting at our assumption from earlier that games with more DLC are rated worse.
+As we can see only "Strategy" and "Simulation" seem....
 
 
 ((boxplot to see if data is even poisson))
+
+### Peak CCU (not relevant?)
 
 Next we will try and look at what variables could influence the peak concurrent users (Peak CCU).
 This is a metric 
