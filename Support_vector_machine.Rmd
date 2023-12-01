@@ -17,23 +17,26 @@ library(caret)
 
 # Support vector machine (SVM)
 ```{r}
-column_classes <- c(Release.date = "Date")
-games <- read.csv('data/games_clean.csv', colClasses = column_classes)
+col_classes <- c(Release.date = "Date")
+games <- read.csv('data/games_clean.csv', colClasses = col_classes)
 ```
 
 ```{r}
 features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log")
-# features <- c("Peak.CCU.log", "Metacritic.score")
-columns <- c(features, "Revenue.log")
-Xy <- games[, columns]
-Xy <- na.omit(Xy)
+cols <- c(features, "Revenue.log")
+Xy <- games[, cols]
+
+# Replace NA values with 0
+# df[features] <- lapply(df[features], function(x) replace(x, is.na(x), 0))
+
+Xy <- na.omit(Xy)  # Remove rows with NA values
 ```
 
 ```{r}
 set.seed(42)
-indices <- createDataPartition(Xy$Revenue.log, p=.85, list = F)
-train <- Xy[indices, ]
-test <- Xy[-indices, ]
+indices <- createDataPartition(Xy$Revenue.log, p = .85, list = F)
+train <- Xy[indices,]
+test <- Xy[-indices,]
 ```
 ```{r}
 games_svm <- svm(
@@ -50,9 +53,8 @@ mse <- mean((test$Revenue.log - pred)^2)
 mae <- MAE(test$Revenue.log, pred)
 rmse <- RMSE(test$Revenue.log, pred)
 r2 <- R2(test$Revenue.log, pred, form <- "traditional")
-corr <- cor(test$Revenue.log, pred)
- 
+
 cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
-    "RMSE:", rmse, "\n", "R-squared:", r2, "\n", "Correlation:", corr)
+    "RMSE:", rmse, "\n", "R-squared:", r2, "\n")
 ```
 
