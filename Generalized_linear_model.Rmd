@@ -24,7 +24,7 @@ GLMs are useful because they can handle a wide range of data, including binary, 
 
 ## Poisson
 
-The Poisson model is a type of GLM that is used to analyze count data. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables
+The Poisson model is a type of GLM that is used to analyze count data. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables. Since we can't rely on our data being normally distributed and all relationships being linear, it may make sense to explore the data using a Poisson model.
 
 Some interesting count data we can look at in our data set is: 
 
@@ -34,10 +34,12 @@ Some interesting count data we can look at in our data set is:
 
 
 ((Prose))
+((Filter games metacritic score, only look at games that have a metacritic score))
+((use crossvalidation))
 
 To fit a Poisson Model in R we will use the glm() function, where we can specify the distribution to be used with family = "poisson".
 
-###DLC
+### DLC
 
 Let us first take a look at what influences the DLC.count variable. We want to look at which variables lead to higher amounts of DLC. In recent years DLC has come under fire, for developers being lazy, trying to perform cash grabs by withholding content on release in order to release it as DLC later down the road.
 
@@ -48,7 +50,7 @@ games.clean <- read.csv('data/games_clean.csv', colClasses = column.classes)
 
 
 #release date crashes the model, because it must first be converted, however is it count data?
-dlc.model1 <- glm(DLC.count ~ Price + Metacritic.score + Positive + Negative, family = "poisson", data = games.clean)
+dlc.model1 <- glm(DLC.count ~ Price + Metacritic.score + Release.date + Positive + Negative, family = "poisson", data = games.clean)
 summary(dlc.model1)
 
 
