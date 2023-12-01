@@ -12,6 +12,7 @@ urlcolor: blue
 library(tidyverse)
 library(e1071)
 library(caret)
+library(knitr)
 ```
 
 # Support vector machine (SVM)
@@ -20,23 +21,24 @@ col_classes <- c(Release.date = "Date")
 games <- read.csv('data/games_clean.csv', colClasses = col_classes)
 ```
 
+## Predicting revenue
+
 ```{r}
 features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count",
               "Genre.Indie", "Genre.Action", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")
-cols <- c(features, "Revenue.log")
-Xy <- games[, cols]
+games_Xy <- games[, c(features, "Revenue.log")]
 
 # Replace NA values with 0
 # df[features] <- lapply(df[features], function(x) replace(x, is.na(x), 0))
 
-Xy <- na.omit(Xy)  # Remove rows with NA values
+games_Xy <- na.omit(games_Xy)  # Remove rows with NA values
 ```
 
 ```{r}
 set.seed(42)
-indices <- createDataPartition(Xy$Revenue.log, p = .85, list = F)
-train <- Xy[indices,]
-test <- Xy[-indices,]
+indices <- createDataPartition(games_Xy$Revenue.log, p = .85, list = F)
+train <- games_Xy[indices,]
+test <- games_Xy[-indices,]
 ```
 
 ```{r}
@@ -68,3 +70,22 @@ cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
     "RMSE:", rmse, "\n", "R-squared:", r2, "\n")
 ```
 
+## Indie game classification
+```{r}
+features <- c("Revenue", "Owners.mean", "Peak.CCU", "Metacritic.score", "Positive", "Negative", "Publishers.count")
+indie_Xy <- games[, c(features, "Genre.Indie")]
+
+# Replace NA values with 0
+# df[features] <- lapply(df[features], function(x) replace(x, is.na(x), 0))
+
+indie_Xy <- na.omit(indie_Xy)  # Remove rows with NA values
+
+indie_stats <- indie_Xy %>%
+    group_by(Genre.Indie) %>%
+    summarise("Count" = n(), "Revenue" = round(mean(Revenue)), "Owners" = round(mean(Owners.mean)),
+              "Metacritic.score" = round(mean(`Metacritic.score`)),
+              "Peak.CCU" = round(mean(`Peak.CCU`)), "Positive" = round(mean(`Positive`)),
+              "Negative" = round(mean(`Negative`)), "Publishers.count" = round(mean(`Publishers.count`)))
+
+kable(indie_stats)
+```
