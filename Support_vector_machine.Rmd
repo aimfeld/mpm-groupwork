@@ -44,20 +44,20 @@ test <- games_Xy[-indices,]
 ```{r}
 grid <- expand.grid(C = c(0.01, 0.1, 1, 10))
 trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
-formula <- as.formula(paste("Revenue.log ~", paste(features, collapse = " + ")))
-svm_grid <- train(
-    formula, data = train, method = "svmLinear",
+
+games_svm <- train(
+    Revenue.log ~ ., data = train, method = "svmLinear",
     trControl = trctrl,
     preProcess = c("center", "scale"),
     tuneGrid = grid
 )
-plot(svm_grid)
+plot(games_svm)
 
-svm_grid
+games_svm
 ```
 
 ```{r}
-pred <- predict(svm_grid, test)
+pred <- predict(games_svm, test)
 plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
 abline(lm(pred ~ test$Revenue.log), 1, col = "red")
 
@@ -72,20 +72,38 @@ cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
 
 ## Indie game classification
 ```{r}
-features <- c("Revenue", "Owners.mean", "Peak.CCU", "Metacritic.score", "Positive", "Negative", "Publishers.count")
+features <- c("Revenue.log", "Owners.mean", "Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
 indie_Xy <- games[, c(features, "Genre.Indie")]
-
-# Replace NA values with 0
-# df[features] <- lapply(df[features], function(x) replace(x, is.na(x), 0))
+indie_Xy$Genre.Indie <- as.factor(indie_Xy$Genre.Indie)
 
 indie_Xy <- na.omit(indie_Xy)  # Remove rows with NA values
 
 indie_stats <- indie_Xy %>%
     group_by(Genre.Indie) %>%
-    summarise("Count" = n(), "Revenue" = round(mean(Revenue)), "Owners" = round(mean(Owners.mean)),
-              "Metacritic.score" = round(mean(`Metacritic.score`)),
-              "Peak.CCU" = round(mean(`Peak.CCU`)), "Positive" = round(mean(`Positive`)),
-              "Negative" = round(mean(`Negative`)), "Publishers.count" = round(mean(`Publishers.count`)))
+    summarise("Count" = n(), "Revenue" = round(mean(exp(Revenue.log))), "Owners" = round(mean(Owners.mean)),
+              "Metacritic Score" = round(mean(`Metacritic.score`)),
+              "Peak CCU" = round(mean(exp(Peak.CCU.log))), "Positive Votes" = round(mean(exp(Positive.log))),
+              "Negative Votes" = round(mean(exp(Negative.log))), "Publisher count" = round(mean(Publishers.count)))
 
 kable(indie_stats)
 ```
+```{r}
+set.seed(42)
+indices <- createDataPartition(indie_Xy$Genre.Indie, p = .85, list = F)
+train <- indie_Xy[indices,]
+test <- indie_Xy[-indices,]
+
+trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
+
+indie_svm <- train(Genre.Indie ~ ., data = train, method = "svmLinear",
+                    trControl = trctrl,
+                    preProcess = c("center", "scale"))
+
+indie_svm
+```
+```{r}
+# Apply to Test Data
+test_pred <- predict(indie_svm, newdata = test)
+confusionMatrix(table(test_pred, test$Genre.Indie))
+```
+
