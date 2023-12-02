@@ -32,20 +32,20 @@ games <- read.csv('data/games_clean.csv', colClasses = col_classes)
 As predictors for revenue, we will use the following features: peak concurrent users, metacritic score, positive votes, negative votes, number of games published by the publisher, and genre (indie, action, adventure, simulation, strategy). For features with extremely right-skewed distributions, we will use the logarithm, although SVMs probably could handle the skewness just fine.
 
 ```{r}
-features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count",
+revenue_features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count",
               "Genre.Indie", "Genre.Action", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")
 
-games_Xy <- games[, c(features, "Revenue.log")]
+revenue_Xy <- games[, c(revenue_features, "Revenue.log")]
 
 # Replace NA values with 0
-# df[features] <- lapply(df[features], function(x) replace(x, is.na(x), 0))
+# df[revenue_features] <- lapply(df[revenue_features], function(x) replace(x, is.na(x), 0))
 
-games_Xy <- na.omit(games_Xy)  # Remove rows with NA values
+revenue_Xy <- na.omit(revenue_Xy)  # Remove rows with NA values
 
 set.seed(42)
-indices <- createDataPartition(games_Xy$Revenue.log, p = .85, list = F)
-train <- games_Xy[indices,]
-test <- games_Xy[-indices,]
+indices <- createDataPartition(revenue_Xy$Revenue.log, p = .85, list = F)
+revenue_train <- revenue_Xy[indices,]
+revenue_test <- revenue_Xy[-indices,]
 ```
 Since only high quality games are reviewed by professional critics, we select only a small subset of games which were actually reviewed by Metacritic. We are still left with 2806 games for training and testing. Of these, 85% will be used for training and 15% for testing.
 
@@ -55,14 +55,14 @@ We will use 5-fold cross-validation (without repetition) on the training set to 
 grid <- expand.grid(C = c(0.01, 0.1, 1, 10))
 trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
 
-games_svm <- train(
-    Revenue.log ~ ., data = train, method = "svmLinear",
+revenue_svm <- train(
+    Revenue.log ~ ., data = revenue_train, method = "svmLinear",
     trControl = trctrl,
     preProcess = c("center", "scale"),
     tuneGrid = grid
 )
 
-games_svm
+revenue_svm
 ```
 
 Looking at the output, we can see that the model with C = 0.1 has the lowest RMSE. However, the difference between the models is very small, so the cost parameter really does not matter much in this case.
@@ -70,14 +70,14 @@ Looking at the output, we can see that the model with C = 0.1 has the lowest RMS
 Let's now apply the model to the test data and evaluate the results.
 
 ```{r}
-pred <- predict(games_svm, test)
-plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
-abline(lm(pred ~ test$Revenue.log), 1, col = "red")
+revenue_pred <- predict(revenue_svm, revenue_test)
+plot(revenue_test$Revenue.log, revenue_pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
+abline(lm(revenue_pred ~ revenue_test$Revenue.log), 1, col = "red")
 
-mse <- mean((test$Revenue.log - pred)^2)
-mae <- MAE(test$Revenue.log, pred)
-rmse <- RMSE(test$Revenue.log, pred)
-r2 <- R2(test$Revenue.log, pred, form <- "traditional")
+mse <- mean((revenue_test$Revenue.log - revenue_pred)^2)
+mae <- MAE(revenue_test$Revenue.log, revenue_pred)
+rmse <- RMSE(revenue_test$Revenue.log, revenue_pred)
+r2 <- R2(revenue_test$Revenue.log, revenue_pred, form <- "traditional")
 
 cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
     "RMSE:", rmse, "\n", "R-squared:", r2, "\n")
@@ -89,7 +89,7 @@ We can use a QQ plot to see whether our predictions are more or less of the same
 
 ```{r}
 # Creating a QQ plot with base R
-qqplot(test$Revenue.log, pred, main = "QQ Plot of Revenue (log)", xlab = "Quantiles of Actual Revenue", ylab = "Quantiles of Predicted Revenue")
+qqplot(revenue_test$Revenue.log, revenue_pred, main = "QQ Plot of Revenue (log)", xlab = "Quantiles of Actual Revenue", ylab = "Quantiles of Predicted Revenue")
 abline(0, 1, col = "red")  # Adding a 45-degree reference line
 ```
 
@@ -97,16 +97,16 @@ In summary we can say that the SVM model predicts revenue quite well, with an R-
 
 ## Indie game classification
 ```{r}
-features <- c("Revenue.log", "Owners.mean", "Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
-indie_Xy <- games[, c(features, "Genre.Indie")]
-indie_Xy$Genre.Indie <- factor(indie_Xy$Genre.Indie, labels=c("IndieNo", "IndieYes"))
+indie_features <- c("Revenue.log", "Owners.mean", "Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
+indie_Xy <- games[, c(indie_features, "Genre.Indie")]
+indie_Xy$Genre.Indie <- factor(indie_Xy$Genre.Indie, labels=c("No", "Yes"))
 
 indie_Xy <- na.omit(indie_Xy)  # Remove rows with NA values
 
 indie_stats <- indie_Xy %>%
     group_by(Genre.Indie) %>%
     summarise("Count" = n(), "Revenue" = round(mean(exp(Revenue.log))), "Owners" = round(mean(Owners.mean)),
-              "Metacritic Score" = round(mean(`Metacritic.score`)),
+              "Metacritic" = round(mean(`Metacritic.score`)),
               "Peak CCU" = round(mean(exp(Peak.CCU.log))), "Positive Votes" = round(mean(exp(Positive.log))),
               "Negative Votes" = round(mean(exp(Negative.log))), "Publisher count" = round(mean(Publishers.count)))
 
@@ -115,12 +115,12 @@ kable(indie_stats)
 ```{r}
 set.seed(42)
 indices <- createDataPartition(indie_Xy$Genre.Indie, p = .85, list = F)
-train <- indie_Xy[indices,]
-test <- indie_Xy[-indices,]
+indie_train <- indie_Xy[indices,]
+indie_test <- indie_Xy[-indices,]
 
 trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1, classProbs = T)
 
-indie_svm <- train(Genre.Indie ~ ., data = train, method = "svmLinear",
+indie_svm <- train(Genre.Indie ~ ., data = indie_train, method = "svmLinear",
                     trControl = trctrl,
                     preProcess = c("center", "scale"))
 
@@ -128,18 +128,18 @@ indie_svm
 ```
 ```{r}
 # Apply to Test Data
-test_pred <- predict(indie_svm, newdata = test)
-confusionMatrix(table(test_pred, test$Genre.Indie))
+indie_pred <- predict(indie_svm, newdata = indie_test)
+confusionMatrix(table(indie_pred, indie_test$Genre.Indie))
 ```
 ```{r}
 # Calculate probabilities
-test_prob <- predict(indie_svm, newdata = test, type = "prob")
+indie_prob <- predict(indie_svm, newdata = indie_test, type = "prob")
 
 # Extract probabilities for the positive class (assuming it's the second column)
-prob_positive_class <- test_prob[,2]
+prob_positive_class <- indie_prob[, 2]
 
 # Generate ROC curve
-roc_curve <- roc(test$Genre.Indie, prob_positive_class)
+roc_curve <- roc(indie_test$Genre.Indie, prob_positive_class)
 tpr <- roc_curve$sensitivities  # True Positive Rate
 fpr <- 1 - roc_curve$specificities  # False Positive Rate
 
