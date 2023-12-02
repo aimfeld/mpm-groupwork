@@ -8,10 +8,8 @@ urlcolor: blue
 ```{r child = 'Knitr_setup.Rmd'}
 ```
 
-((Filter games metacritic score, only look at games that have a metacritic score))
-((use crossvalidation))
 
-# Generalized linear model (GLM)
+# Generalized linear models (GLMs)
 
 Generalized Linear Models (GLMs) are statistical models that can be used to predict the relationship between a response variable and one or more predictor variables. For our video game dataset, GLMs can be used to predict the relationship between a game's success and various factors such as the game's genre, platform, and critical reception. 
 
@@ -25,110 +23,126 @@ GLMs are useful because they can handle a wide range of data, including binary, 
 
 
 
-## Poisson
+## The poisson model
 
-The Poisson model is a type of GLM that is used to analyze *count data*. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables. Since we can't rely on our data being normally distributed and all relationships being linear, it may make sense to explore the data using a Poisson model.
+The Poisson model is a type of GLM that is used to analyze *count data*. It can be particularly useful when we expect our response variable not follow a normal distribution or if we suspect non-linear relationships with the predictor variables. Since we can't rely on our data being normally distributed and all relationships being linear, it may make sense to explore the data assuming a poisson distribution as shown in the following image.
 
-Some interesting count data we can look at in our data set is: 
+```{r echo=FALSE}
+library(ggplot2)
+library(dplyr)
+set.seed(1)
+
+# Generating a random sample from a Poisson distribution
+data <- data.frame(value = rpois(1000, lambda = 4))
+
+# Create a frequency table
+frequency <- data %>% 
+  count(value) %>% 
+  mutate(proportion = n / sum(n))
+
+# Plotting the distribution
+ggplot(frequency, aes(x = value, y = proportion)) +
+  geom_col(fill = 'darkgrey') +
+  labs(x = 'Value', y = 'Proportion', title = 'Poisson Distribution') +
+  theme_minimal()
+```
+
+
+To fit a Poisson Model in R we will use the glm() function, where we can specify the distribution to be used with family = "poisson, or family = "quasipoisson"
+
+The standard Poisson regression model assumes that the variance increases linearly with the mean. However this is most often not the case for real data. More often than not count data variance is greater than what we would expect given the poisson distribution. This is called overdispersion. If we assume overdispersion in our we can deal with this by using the family = "quasipoisson" statement to estimate the degree of overdispersion.
+
+
+### Count data in our dataset
+
+There is some interesting count data to look at in our dataset such as: 
 
 - Peak concurrent users: Which factors contribute to a high peak of concurrent users?
 - DLC count: DLC - downloadable content represents extra content in form of new missions, maps or items, usually released after the game has launched. We can try and find out which types of games tend to have more DLC.
+- Amount of owners: What influences people to buy a certain game?
 
-To fit a Poisson Model in R we will use the glm() function, where we can specify the distribution to be used with family = "poisson".
 
 *Important note:* In the exploratory data analysis we have seen that some of our data is very skewed an thus we log-transformed some variables. This process can change a count variable to a continuous variable and thus no longer making it suitable for a poisson model. Lets say a game has 150 positive reviews. The log-transformed value will no longer be 150 but perhaps 3.4568 which is no longer a count. 
 
 Now there are workarounds to this such as rounding to the nearest integer, but this comes with loss of information.
-After exploring what affects the revenue and peak concurrent users variables we receive inconclusive information with a poisson model. We thus make the decision to stick only to actual count data.
+After exploring what affects the revenue and peak concurrent users variables we receive inconclusive information with a poisson model. We thus make the decision to stick only to actual count data such as the DLC count.
 
 
+### Downloadable content (DLC)
 
-### DLC
-
-In recent years DLC has come under fire. The argument is that developers are trying to perform cash grabs by withholding content on release in order to release it as DLC later down the road and make more money. This can lead to negative reviews and have negative impact on sales. However not all DLC is like this so let's explore.
+In recent years DLC has come under fire from the gaming community. The argument is that developers are trying milk customers by withholding content upon game release in order to then release said content as DLC later down the road and make more money. This can lead to negative reviews and have negative impact on sales. However not all DLC is like this so let's explore.
 
 
-Let us first take a look at what influences the DLC.count variable. We want to look at which variables lead to higher amounts of DLC. We look at the influence of Price, Metacritic.score, Category.Single.player and Category.Multi.player
+Let us first take a look at what influences the DLC count variable. We want to look at which variables lead to higher amounts of DLC. For this we will consider the Price, Metacritic score, if the game is either Singleplayer or Multiplayer as well as the top genres and other variables.
 
 
 ```{r}
-# loading the data & reading in the date as a date format
+# loading the data & reading in the date as a date format for the model
 column.classes <- c(Release.date = "Date")
 games.clean <- read.csv('data/games_clean.csv', colClasses = column.classes)
 
-
 #modelling
-dlc.model <- glm(DLC.count ~ Price + Metacritic.score + Category.Single.player + Category.Multi.player, family = "poisson", data = games.clean)
+dlc.model <- glm(DLC.count ~ Price + Metacritic.score + Category.Single.player + Category.Multi.player + Release.date + Lang.count + Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "quasipoisson", data = games.clean)
 summary(dlc.model)
+
 ```
-Interpreting the summary of a Poisson model is not as straightforward as the interpretation of linear models.
-The output estimates need further treatment, which we will not go into here. However a general trend is visible.
-We can see that games categorized as 'Multiplayer" seemingly have a positive effect on the amount DLC, with games categorized as "Singleplayer" having a negative effect on the amount of DLC. The higher the orice and the higher the metacritic score seems to have a small positive effect on the amount of DLC in this model.
+Interpreting the summary output the Poisson model is not as straightforward as the interpretation of linear models. The output estimates need further treatment, which we will not go into here. However a general trend is visible.
+
+We can see that Multiplayer games seemingly have a (comparatively) large positive effect on the amount DLC, compared to Singleplayer games not having a statistically significant effect on the amount of DLC.
+The higher the price and the higher the Metacritic score seems to have a small positive effect on the amount of DLC in this model. Meaning more expensive and well reviewed games tend to have more DLC. 
+
+What is also interesting is looking at the genres. We can see that different genres have either positive or negative effects on the amount of DLC. Indie and Casual games tend to have less DLC compared to Action and Simulation games.
+
+Finally when looking at the release date estimate we can see that it is significant but less so than others. together with the small effect size (1.002e-04) we may make the conclusion that we don't find evidence that the amount of DLC has changed much over the years. Newer games do not have substantially more DLC compared to games in the past.
+
+For this model we choose the "quasipoisson" argument, as we can see the dispersion parameter is around 12.75, which means the variance is larger than expected (Poisson model assumes dispersion parameter of 1). Larger values hint at the poisson model not being well suited for this analysis. We would definitely have to delve deeper into this and take a look at the DLC metric with other models to verify our observations here.
+
+*Note:* The model automatically deletes missing values. As we don't know the reason for them being missing we take no further action by managing them manually.
 
 
-Let us now look at User sentiment regarding DLC.
-The question we are trying to answer is: Do users like DLC or not?
 
+
+
+### Owners (shall we delete this?)
+
+In this section we would like to find out if we can use a poisson model to determine what influences someone to buy a game or not.
+To estimate our amount of owners we look at the Price of a game, the metacritic score, positive and negative user scores, if the game is single or multiplayer and we add the release date in the end, as kind of a control variable, as we would expect a game to receive more owners with time. 
 
 ```{r}
-dlc.review <- glm(DLC.count ~ Positive.log + Negative.log, family = "poisson", data = games.clean)
-summary(dlc.review)
-
-```
-We can see that there seem to be a positive relationship with negative reviews and DLC. For each negative review the DLC count variable increases by an amount. We can see this amount is larger than for positive reviews.
-
-
-Let us now look at which of our top genres are most likely to have DLC.
-
-```{r}
-
-dlc.genres <- glm(DLC.count ~ Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "poisson", data = games.clean)
-summary(dlc.genres)
-
-
-```
-As we can see only "Strategy" and "Simulation" seem....
-
-
-((boxplot to see if data is even poisson))
-
-### Peak CCU (not relevant?)
-
-Next we will try and look at what variables could influence the peak concurrent users (Peak CCU).
-This is a metric 
-
-```{r}
-ccu.model2 <- glm(Peak.CCU ~  Price + Metacritic.score + Average.playtime.two.weeks, family = "poisson", data = games.clean)
-summary(ccu.model2)
+#modelling
+owners.model <- glm(Owners.mean ~ Price + Metacritic.score + Category.Single.player + Category.Multi.player + Release.date + Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "quasipoisson", data = games.clean)
+summary(owners.model)
 ```
 
+From the output we don't really glean much This is because we can see the dispersion parameter is extremely high, hinting at huge variance in our data. 
+
+Due to this we conclude that the owners figure must be explored with different models.
 
 
-## Binomial
+
+## The binomial model
 
 This dataset contains a few interesting areas to apply a binomial model.
-PC games are usually developed for Windows, with Mac and Linux operating systems considered second rate.
+PC games are usually developed primarlily for Windows, with Mac and Linux operating systems considered second rate.
+
 
 Let us look at what predictors could be relevant to see if a game supports Linux or not.
-Applying the following binomial logistic regression 
+We apply the following binomial logistic regression.
 
 ```{r}
-#data preparation for binomial model
 
-
-# 2. convert release date to numeric value for the model
-
-ref.date <- as.Date("2000-01-01")
-games.clean$Release.date <- as.numeric(games.clean$Release.date - ref.date)
+linux.model <- glm(Linux ~ Release.date + Metacritic.score + Price, family = "binomial", data = games.clean)
+summary(linux.model)
 ```
+From the output we can see that the higher (newer) the release date of a game is, the higher the odds are a given game supports the linux platform. We can also see that Linux supported games tend to be cheaper, indicated by the negative estimate on the Price.
 
-
+It could also be interesting to look at which types of games usually support Linux.
+For this we can look at the top genres in our dataset.
 
 ```{r}
 
 #model >> developers is too much data
-linux.model3 <- glm(Linux ~ Release.date + Metacritic.score + Price, family = "binomial", data = games.clean)
-summary(linux.model3)
+linux_genres.model <- glm(Linux ~ Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "binomial", data = games.clean)
+summary(linux_genres.model)
 ```
-
-
+From the output we can see that typically Indie and Strategy games are associated with higher chances of being supported by Linux. The other, perhaps more mainstream categories are less likely to have Linux support as indicated by their negative estimates.
