@@ -41,12 +41,12 @@ urlcolor: blue
 # Mike
 ```
 
-```{r child = 'Neural_network.Rmd'}
-# Adrian + Mike
-```
-
 ```{r child = 'Support_vector_machine.Rmd'}
 # Adrian
+```
+
+```{r child = 'Neural_network.Rmd'}
+# Adrian + Mike
 ```
 
 ```{r child = 'Optimization.Rmd'}
