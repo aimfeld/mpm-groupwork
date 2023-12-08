@@ -7,5 +7,76 @@ urlcolor: blue
 
 ```{r child = 'Knitr_setup.Rmd'}
 ```
+```{r}
+library(tidyverse)
+library(caret)
+library(neuralnet)
+```
+
 
 # Neural network (NN)
+
+```{r}
+col_classes <- c(Release.date = "Date")
+games <- read.csv('data/games_clean.csv', colClasses = col_classes)
+```
+```{r}
+numeric_features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
+one_hot_features <- c("Genre.Indie", "Genre.Action", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")
+features <- c(numeric_features, one_hot_features)
+
+games <- na.omit(games[, c(features, "Revenue.log")])  # Remove rows with NA values
+Xy <- games
+
+# Scaling the numeric features is crucial for the neural network to work properly
+preProcess_values <- preProcess(games[, numeric_features], method = "range")
+scaled_numeric <- predict(preProcess_values, games[, numeric_features])
+Xy <- cbind(scaled_numeric, games[, c(one_hot_features, "Revenue.log")])
+
+set.seed(42)
+indices <- createDataPartition(Xy$Revenue.log, p = .85, list = F)
+train <- Xy[indices,]
+test <- Xy[-indices,]
+```
+
+```{r}
+games_net <- neuralnet(Revenue.log ~ ., train, hidden = 3 , stepmax = 1e+06)
+plot(games_net)
+```
+
+```{r}
+pred <- compute(games_net, test[features])
+pred <- pred$net.result
+
+plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
+abline(lm(pred ~ test$Revenue.log), 1, col = "red")
+
+mse <- mean((test$Revenue.log - pred)^2)
+mae <- MAE(test$Revenue.log, pred)
+rmse <- RMSE(test$Revenue.log, pred)
+r2 <- R2(test$Revenue.log, pred, form <- "traditional")
+
+cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
+    "RMSE:", rmse, "\n", "R-squared:", r2, "\n")
+```
+
+```{r}
+# set.seed(42)
+# tuGrid <- expand.grid(.layer1=c(1:4), .layer2=c(0,2), .layer3=c(0))
+# trCtrl <- trainControl(
+#     method = 'repeatedcv',
+#     number = 5,
+#     repeats = 1,
+#     returnResamp = 'final'
+# )
+# models <- train(
+#     x = train[features],
+#     y = train$Revenue.log,
+#     method = 'neuralnet', metric = 'RMSE',
+#     linear.output = TRUE,
+#     # be careful, does only work on x!
+#     preProcess = c('center', 'scale'),
+#     tuneGrid = tuGrid,
+#     trControl = trCtrl
+# )
+```
