@@ -16,10 +16,17 @@ library(neuralnet)
 
 # Neural network (NN)
 
+Neural networks excel in learning and modeling complex patterns, making them ideal for tasks like image and speech recognition, and natural language processing. Their layered structure allows them to handle a wide range of data types and problems. However, they require large datasets for effective training, making them less suitable in data-scarce situations. Their "black box" nature often makes it difficult to understand their decision-making process, which is a drawback in scenarios where explainability is crucial. Additionally, they can be resource-intensive and are prone to overfitting, performing well on training data but poorly on new, unseen data.
+
+Let's replicate the revenue prediction from the chapter on Support Vector Machines (SVMs), but this time using a neural network. We'll use the `neuralnet` package, which is a simple implementation of a feed-forward neural network with a single hidden layer. The `caret` package provides a convenient wrapper for the `neuralnet` package, allowing us to use the same workflow as with other models.
+
 ```{r}
 col_classes <- c(Release.date = "Date")
 games <- read.csv('data/games_clean.csv', colClasses = col_classes)
 ```
+
+We use the same train-test split as in the SVM chapter, with the same seed for reproducibility. We also choose the same features as in the SVM chapter, and the same scaling method for numeric features. Again, we use 5-fold cross-validation but without any tuning of the model parameters (e.g. different hidden layer sizes, regularization parameters, etc), since we don't have a GPU to speed up the training. Note that scaling the numeric features is crucial for the neural network to work properly. Without any scaling, the network predicted the same value for all observations. Using min-max scaling works, but the network seems to converge faster with centering and scaling to the same variance.
+
 ```{r}
 numeric_features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
 one_hot_features <- c("Genre.Indie", "Genre.Action", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")
@@ -29,7 +36,7 @@ games <- na.omit(games[, c(features, "Revenue.log")])  # Remove rows with NA val
 Xy <- games
 
 # Scaling the numeric features is crucial for the neural network to work properly
-preProcess_values <- preProcess(games[, numeric_features], method = "range")
+preProcess_values <- preProcess(games[, numeric_features], method = c("center", "scale"))
 scaled_numeric <- predict(preProcess_values, games[, numeric_features])
 Xy <- cbind(scaled_numeric, games[, c(one_hot_features, "Revenue.log")])
 
@@ -40,12 +47,36 @@ test <- Xy[-indices,]
 ```
 
 ```{r}
-games_net <- neuralnet(Revenue.log ~ ., train, hidden = 3 , stepmax = 1e+06)
-plot(games_net)
+set.seed(42)
+nn_grid <- expand.grid(.layer1=c(1), .layer2=c(0), .layer3=c(0))
+train_control <- trainControl(
+    method = 'cv',
+    number = 5,
+    # verboseIter = TRUE
+)
+games_net <- train(
+    x = train[features],
+    y = train$Revenue.log,
+    stepmax = 1e+06,
+    method = 'neuralnet',
+    metric = 'Rsquared',
+    tuneGrid = nn_grid,
+    trControl = train_control
+)
+games_net
+# plot(games_net) # Works only if we have more than value for tuning
 ```
 
+Neural networks are overpowered for such a simple dataset and experimentation with different sizes of the hidden layer shows that a single neuron is sufficient. Indeed, cross-validation shows that larger hidden layers tends to overfit the data (1 neuron: R-squared = 0.794, 2 neurons: R-squared = 0.770). Therefore, we'll use a single neuron in the hidden layer. Without GPU acceleration, cross-validating larger networks takes quite long. We have tried [multicore-processing](https://topepo.github.io/caret/parallel-processing.html) with 11 cores instead of just 1 core by default, but the speedup was mediocre.
+
 ```{r}
-pred <- compute(games_net, test[features])
+plot(games_net$finalModel, rep = "best", information = FALSE)
+```
+
+Compared to the cross-validation results of the SVM model (Rsquared = 0.792), the neural network performs about the same (Rsquared = 0.794). Applying the final model from cross-validation, which is trained on the whole training set, we get the following results for the test set:
+
+```{r}
+pred <- compute(games_net$finalModel, test[features])
 pred <- pred$net.result
 
 plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
@@ -60,23 +91,6 @@ cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
     "RMSE:", rmse, "\n", "R-squared:", r2, "\n")
 ```
 
-```{r}
-# set.seed(42)
-# tuGrid <- expand.grid(.layer1=c(1:4), .layer2=c(0,2), .layer3=c(0))
-# trCtrl <- trainControl(
-#     method = 'repeatedcv',
-#     number = 5,
-#     repeats = 1,
-#     returnResamp = 'final'
-# )
-# models <- train(
-#     x = train[features],
-#     y = train$Revenue.log,
-#     method = 'neuralnet', metric = 'RMSE',
-#     linear.output = TRUE,
-#     # be careful, does only work on x!
-#     preProcess = c('center', 'scale'),
-#     tuneGrid = tuGrid,
-#     trControl = trCtrl
-# )
-```
+Again, we see about the same performance as with the SVM model. If anything, the neural network seems to generalizes slightly better to the test set (Rsquared = 0.794 vs 0.730 for the SVM model). Both of these methods are somewhat overkill for this dataset.
+
+In summary, this chapters focused on replicating the results from the SVM chapter using a neural network, rather than generating additional insights from an investors perspective. However, it's important to replicate results using different methods to ensure that the results are robust. In this case, we see that the neural network performs about the same as the SVM models.
