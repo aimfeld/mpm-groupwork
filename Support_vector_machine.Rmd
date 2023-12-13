@@ -13,9 +13,15 @@ library(tidyverse)
 library(e1071)
 library(caret)
 library(knitr)
+library(pROC)
 ```
 
 # Support vector machine (SVM)
+
+In this chapter, we will use support vector machines (SVMs) to predict revenue and classify indie games. SVMs are supervised learning models that analyze data used for classification and regression analysis. Given a set of training examples, each marked as belonging to one of two categories, an SVM training algorithm builds a model that assigns new examples to one category or the other.
+
+SVMs are particularly effective in cases where the number of dimensions is greater than the number of samples, making them suitable for data with a large number of features. However, unlike some other models, SVMs do not provide transparency and are often considered as a "black box" in terms of interpretability. Also, handling missing data can be tricky with SVMs. We will omit rows with missing values, since meaningful imputation is not possible for the chosen predictors.
+
 ```{r}
 col_classes <- c(Release.date = "Date")
 games <- read.csv('data/games_clean.csv', colClasses = col_classes)
@@ -23,87 +29,145 @@ games <- read.csv('data/games_clean.csv', colClasses = col_classes)
 
 ## Predicting revenue
 
+As predictors for revenue, we will use the following features: peak concurrent users, metacritic score, positive votes, negative votes, number of games published by the publisher, and genre (indie, action, adventure, simulation, strategy). For features with extremely right-skewed distributions, we will use the logarithm, although SVMs probably could handle the skewness just fine.
+
 ```{r}
-features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count",
+revenue_features <- c("Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count",
               "Genre.Indie", "Genre.Action", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")
-games_Xy <- games[, c(features, "Revenue.log")]
+
+revenue_Xy <- games[, c(revenue_features, "Revenue.log")]
 
 # Replace NA values with 0
-# df[features] <- lapply(df[features], function(x) replace(x, is.na(x), 0))
+# df[revenue_features] <- lapply(df[revenue_features], function(x) replace(x, is.na(x), 0))
 
-games_Xy <- na.omit(games_Xy)  # Remove rows with NA values
-```
+revenue_Xy <- na.omit(revenue_Xy)  # Remove rows with NA values
 
-```{r}
 set.seed(42)
-indices <- createDataPartition(games_Xy$Revenue.log, p = .85, list = F)
-train <- games_Xy[indices,]
-test <- games_Xy[-indices,]
+indices <- createDataPartition(revenue_Xy$Revenue.log, p = .85, list = F)
+revenue_train <- revenue_Xy[indices,]
+revenue_test <- revenue_Xy[-indices,]
 ```
+Since only high quality games are reviewed by professional critics, we select only a small subset of games which were actually reviewed by Metacritic. We are still left with 2806 games for training and testing. Of these, 85% will be used for training and 15% for testing.
+
+We will use 5-fold cross-validation (without repetition) on the training set to tune the cost parameter C. The C parameter in an SVM model controls the trade-off between achieving a high margin and classifying the training data correctly. It essentially regulates the penalty for misclassifying data points.
 
 ```{r}
 grid <- expand.grid(C = c(0.01, 0.1, 1, 10))
 trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
 
-games_svm <- train(
-    Revenue.log ~ ., data = train, method = "svmLinear",
+revenue_svm <- train(
+    Revenue.log ~ ., data = revenue_train, method = "svmLinear",
     trControl = trctrl,
     preProcess = c("center", "scale"),
     tuneGrid = grid
 )
-plot(games_svm)
 
-games_svm
+revenue_svm
 ```
 
-```{r}
-pred <- predict(games_svm, test)
-plot(test$Revenue.log, pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
-abline(lm(pred ~ test$Revenue.log), 1, col = "red")
+Looking at the output, we can see that the model with C = 0.1 has the lowest RMSE. However, the difference between the models is very small, so the cost parameter really does not matter much in this case.
 
-mse <- mean((test$Revenue.log - pred)^2)
-mae <- MAE(test$Revenue.log, pred)
-rmse <- RMSE(test$Revenue.log, pred)
-r2 <- R2(test$Revenue.log, pred, form <- "traditional")
+Let's now apply the model to the test data and evaluate the results.
+
+```{r}
+revenue_pred <- predict(revenue_svm, revenue_test)
+plot(revenue_test$Revenue.log, revenue_pred, xlab = "Actual", ylab = "Predicted", main = "Revenue (log) - Actual vs Predicted")
+abline(lm(revenue_pred ~ revenue_test$Revenue.log), 1, col = "red")
+
+mse <- mean((revenue_test$Revenue.log - revenue_pred)^2)
+mae <- MAE(revenue_test$Revenue.log, revenue_pred)
+rmse <- RMSE(revenue_test$Revenue.log, revenue_pred)
+r2 <- R2(revenue_test$Revenue.log, revenue_pred, form <- "traditional")
 
 cat(" MAE:", mae, "\n", "MSE:", mse, "\n",
     "RMSE:", rmse, "\n", "R-squared:", r2, "\n")
 ```
 
-## Indie game classification
+During cross-validation, the model achieved an R-squared value of 0.79. On the test set, the R-squared is a bit lower (0.73), but still pretty good. Since we used the logarithm of revenue, we get an evenly distributed scatter-plot showing a high correlation between the actual and predicted values.
+
+We can use a QQ plot to see whether our predictions are more or less of the same quality across the entire range of revenue. The plot shows that the model predicts revenue quite well accross the range, although revenue in the lower range is slightly underpredicted.
+
 ```{r}
-features <- c("Revenue.log", "Owners.mean", "Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
-indie_Xy <- games[, c(features, "Genre.Indie")]
-indie_Xy$Genre.Indie <- as.factor(indie_Xy$Genre.Indie)
+# Creating a QQ plot with base R
+qqplot(revenue_test$Revenue.log, revenue_pred, main = "QQ Plot of Revenue (log)", xlab = "Quantiles of Actual Revenue", ylab = "Quantiles of Predicted Revenue")
+abline(0, 1, col = "red")  # Adding a 45-degree reference line
+```
+
+In summary we can say that the SVM model predicts revenue quite well, with an R-squared of 0.73 on the test set. The most important predictors are the number votes (positive and negative), and the peak number of concurrent users. This is hardly surprising, since the number of game owners is highly correlated both with these predictors and revenue. Therefore, this model may be of limited value as a revenue predictor, since the number of votes and peak concurrent users is probably not known before the game is widely sold, at which point the revenue is known. Further investigation is needed to determine whether these predictors are leading indicators of revenue, which may well be the case and make the model more useful.
+
+## Indie game classification
+
+Indie games, while numerous, might not generate as much revenue as mainstream or AAA titles. The higher marketing budgets, established fan bases, and larger development teams of AAA games often translate into higher sales and revenue. However, indie games can sometimes achieve significant success, especially if they offer unique gameplay, innovative mechanics, or compelling narratives.
+
+```{r}
+indie_features <- c("Revenue.log", "Owners.mean", "Peak.CCU.log", "Metacritic.score", "Positive.log", "Negative.log", "Publishers.count")
+indie_Xy <- games[, c(indie_features, "Genre.Indie")]
+indie_Xy$Genre.Indie <- factor(indie_Xy$Genre.Indie, labels=c("IndieNo", "IndieYes"))
 
 indie_Xy <- na.omit(indie_Xy)  # Remove rows with NA values
 
 indie_stats <- indie_Xy %>%
     group_by(Genre.Indie) %>%
     summarise("Count" = n(), "Revenue" = round(mean(exp(Revenue.log))), "Owners" = round(mean(Owners.mean)),
-              "Metacritic Score" = round(mean(`Metacritic.score`)),
+              "Metacritic" = round(mean(`Metacritic.score`)),
               "Peak CCU" = round(mean(exp(Peak.CCU.log))), "Positive Votes" = round(mean(exp(Positive.log))),
               "Negative Votes" = round(mean(exp(Negative.log))), "Publisher count" = round(mean(Publishers.count)))
 
-kable(indie_stats)
+kable(indie_stats, format.args = list(big.mark = "'"))
 ```
+
+If we group our games by the indie genre, we see that we have roughly equal group sizes (1460 indie vs 1346 non-indie games). However, the average revenue of indie games is much lower than that of non-indie games (10 million vs 28 million USD). Indie games also have fewer owners and votes and their publishers release fewer games. Based on these differences, we should be able to classify indie games with a reasonable degree of accuracy.
+
+Again, we use 5-fold cross-validation (without repetition) on the training set, but this time without hyperparameter-tuning. We also calculate the necessary class probabilites for AUC-ROC analysis later on.
+
 ```{r}
 set.seed(42)
 indices <- createDataPartition(indie_Xy$Genre.Indie, p = .85, list = F)
-train <- indie_Xy[indices,]
-test <- indie_Xy[-indices,]
+indie_train <- indie_Xy[indices,]
+indie_test <- indie_Xy[-indices,]
 
-trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
+trctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 1, classProbs = T)
 
-indie_svm <- train(Genre.Indie ~ ., data = train, method = "svmLinear",
+indie_svm <- train(Genre.Indie ~ ., data = indie_train, method = "svmLinear",
                     trControl = trctrl,
                     preProcess = c("center", "scale"))
 
 indie_svm
 ```
+
 ```{r}
 # Apply to Test Data
-test_pred <- predict(indie_svm, newdata = test)
-confusionMatrix(table(test_pred, test$Genre.Indie))
+indie_pred <- predict(indie_svm, newdata = indie_test)
+confusionMatrix(table(indie_pred, indie_test$Genre.Indie, dnn = c("Prediction", "Actual")), positive = "IndieYes")
 ```
 
+The mean cross-validation accuracy of 0.72 generalizes well to the test set with an accuracy of 0.70. Negative predictions (NPV 0.74) are slightly more accurate than positive ones (PPV = 0.69). Sensitivity (0.80) is higher than specificity (0.60) as the model predicts IndieYes more often, resulting in higher more false positives (80) than false negatives (43).
+
+The ROC curve confirms that the model performs quite well, with an AUC of 0.81. An AUC of 0.5 means that the parameter is no better than random guessing (assuming balanced classes), while an AUC of 1.0 means that the parameter perfectly separates the two groups, regardless of the chosen threshold.
+
+```{r}
+# Calculate probabilities
+indie_prob <- predict(indie_svm, newdata = indie_test, type = "prob")
+
+# Extract probabilities for the positive class (assuming it's the second column)
+prob_positive_class <- indie_prob[, 2]
+
+# Generate ROC curve
+roc_curve <- roc(indie_test$Genre.Indie, prob_positive_class)
+tpr <- roc_curve$sensitivities  # True Positive Rate
+fpr <- 1 - roc_curve$specificities  # False Positive Rate
+
+# Plot ROC curve
+plot(fpr, tpr, type = "l", col = "blue",
+     xlab = "False Positive Rate", ylab = "True Positive Rate",
+     main = "ROC Curve for Indie Game Classification")
+abline(a = 0, b = 1, col = "red", lty = 2)  # Diagonal reference line
+
+# Calculate AUC
+auc_value <- auc(roc_curve)
+
+# Optionally, add AUC to the plot
+text(0.6, 0.2, paste("AUC =", round(auc_value, 2)))
+```
+
+From an investors perspective, it is interesting to note that indie games generate less revenue in general. However, the production and marketing cost is much lower than that of AAA games, so the return on investment (ROI) may be higher. Further analysis is needed to determine which indie games generate the most revenue. We could e.g. look into indie games by genre, votes as leading indicators of revenue, or the effect of Metacritic scores on revenue.
