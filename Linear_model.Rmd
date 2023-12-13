@@ -50,8 +50,10 @@ model <- lm(Peak.CCU.log ~ Owners.mean + Metacritic.score + Positive.log +
 summary(model)
 
 ```
+This linear regression analysis reveals key factors driving the popularity of video games, as indicated by peak concurrent users. Notably, the model highlights several significant predictors of a game's success. High Metacritic scores, positive user reviews, a diverse range of publishers, player versus player (PvP) features, and strong recommendations are all positively correlated with higher peak concurrent users. Interestingly, more widely owned games show a slight negative impact on peak CCU, possibly reflecting market saturation.
 
-The model's findings show a strong tendency (***), indicating a highly significant correlation, for 'Price', 'Recommendations', 'Owners.max', 'Owners.mean', and 'Revenue'. This suggests these factors are might influencing CCU. 'Price' and 'Recommendations', in particular, show a very strong positive relationship with CCU, emphasizing their role in driving game popularity. Some tendency (**) is noted for 'Positive.log', revealing a moderately significant impact on CCU. However, 'DLC.count', along with other variables like 'Required.age', 'Negative.log', and 'Achievements', show no significant tendency, indicating an uncertain influence on CCU. 
+From an investment perspective, the analysis underscores the importance of critical acclaim, positive user reception, and PvP elements in driving a game's popularity. The strong statistical significance of these factors suggests they are reliable indicators of a game's potential success. With about 70% of the variance in peak CCU explained by these variables, investors can make more informed decisions on which games or gaming companies to back. This model offers a valuable tool for understanding the dynamics of the gaming market and identifying promising investment opportunities.
+
 
 # Revenue
 
@@ -67,7 +69,6 @@ summary(model_revenue)
 
 ```
 
-The model's findings reveal a strong tendency (***), indicating a highly significant correlation for 'Peak.CCU,' 'Positive.log,' 'Recommendations,' 'Owners.max,' and 'Owners.mean' with 'Revenue.' This suggests that these factors may influence revenue. In particular, 'Peak.CCU' and 'Recommendations' exhibit a very strong positive relationship with revenue, emphasizing their role in driving game popularity and, consequently, revenue generation. A certain tendency (**) is observed for 'Positive.log,' implying a some tendency impact on revenue.
-However, 'DLC.count,' along with other variables such as 'Median.playtime.forever,' 'Negative.log,' and 'Median.playtime.two.weeks,' do not exhibit a significant tendency, indicating an uncertain influence on revenue.
+Key findings include the strong correlation between player engagement (measured by peak concurrent users) and game revenue, emphasizing the importance of investing in games that actively engage players. User feedback, both positive and negative, significantly impacts revenue, highlighting the value of games that generate active community discussion. Additionally, critical acclaim, indicated by Metacritic scores, is a vital factor in a game's profitability. The study also suggests that broader distribution and multiple publishing partners can enhance revenue. Overall, for investors, prioritizing games with high player engagement, active community interaction, critical acclaim, and broad distribution is a strategic approach to maximize returns in the gaming industry.
 
 
