@@ -22,10 +22,13 @@ str(games)
 ```
 
 # Linear model
-A Linear Model is a statistical method used to model the relationship between a dependent (target) variable and one or more independent variables. The basic idea of a linear model is to represent the dependent variable as a linear combination of the independent variables. Linear models can be extended to consider multiple independent variables and then it is called multple linear model.
- 
-For an linear regression model it is important, that we do not have binary data, 
-as there are other models, which are more suitable for its use case.
+A Linear Model is a statistical method used to model the relationship between a dependent (target) variable and one or more independent variables. The basic idea of a linear model is to represent the dependent variable as a linear combination of the independent variables. Linear models can be extended to consider multiple independent variables and then it is called multiple linear model.
+
+A linear regression model typically utilizes count and continuous data. For binary data, more suitable models are available. Below, the data types are briefly described:
+
+- Binary Data: Consists of values such as 'True' / 'False' or '1' / '0'. An example of binary data is whether a certain programming language is supported or not.<br>
+- Count Data: Comprises integer values (0, 1, 2, 3, ...) that represent the number of occurrences of something. For instance, the number of downloadable content (DLC) packs a game has can be categorized as count data.<br>
+- Continuous Data: Encompasses any value within a given range. An example of continuous data is the amount of time a person has spent playing a particular game.<br>
  
 There are possible questions, which we can have a look at it with the linear model:
 
@@ -39,9 +42,9 @@ Peak Concurrent Users (CCU) is a critical metric for gauging a game's popularity
 
 ```{r lm ccu}
 # Creating a linear model for Peak Concurrent Users (CCU)
-model <- lm(Peak.CCU.log ~ Owners.mean + Metacritic.score + 
-              Positive.log + Publishers.count + Category.PvP + 
-              Recommendations + Revenue.log, data = games)
+model <- lm(Peak.CCU.log ~ Owners.mean + Metacritic.score + Positive.log + 
+              Publishers.count + Category.PvP + Recommendations +
+              Revenue.log, data = games)
 
 # Displaying the model summary
 summary(model)
