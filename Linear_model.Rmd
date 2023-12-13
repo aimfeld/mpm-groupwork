@@ -1,5 +1,6 @@
 ---
 output:
+  pdf_document: default
   html_document:
     code_folding: hide
 urlcolor: blue
@@ -8,4 +9,62 @@ urlcolor: blue
 ```{r child = 'Knitr_setup.Rmd'}
 ```
 
+```{r data prep, Include = FALSE}
+# Loading the data set
+games <- read.csv('data/games_clean.csv')
+```
+
+```{r data cleaning, Include = FALSE}
+
+# Checking the structure of the dataset
+str(games)
+
+```
+
 # Linear model
+A Linear Model is a statistical method used to model the relationship between a dependent (target) variable and one or more independent variables. The basic idea of a linear model is to represent the dependent variable as a linear combination of the independent variables. Linear models can be extended to consider multiple independent variables and then it is called multple linear model.
+ 
+For an linear regression model it is important, that we do not have binary data, 
+as there are other models, which are more suitable for its use case.
+ 
+There are possible questions, which we can have a look at it with the linear model:
+
+- What factors influence the Peak Concurrent Users (CCU) of games on Steam? <br>
+- What factors contribute to the financial success of a game, as measured by its revenue? <br>
+
+# Peak Concurrent Users (CCU) 
+
+Peak Concurrent Users (CCU) is a critical metric for gauging a game's popularity, reflecting the highest number of players online at the same time. It's an essential indicator for assessing a game's appeal and success. Understanding CCU helps identify what drives player engagement in the competitive gaming landscape.<br>
+
+
+```{r lm ccu}
+# Creating a linear model for Peak Concurrent Users (CCU)
+model <- lm(Peak.CCU.log ~ Owners.mean + Metacritic.score + 
+              Positive.log + Publishers.count + Category.PvP + 
+              Recommendations + Revenue.log, data = games)
+
+# Displaying the model summary
+summary(model)
+
+```
+
+The model's findings show a strong tendency (***), indicating a highly significant correlation, for 'Price', 'Recommendations', 'Owners.max', 'Owners.mean', and 'Revenue'. This suggests these factors are might influencing CCU. 'Price' and 'Recommendations', in particular, show a very strong positive relationship with CCU, emphasizing their role in driving game popularity. Some tendency (**) is noted for 'Positive.log', revealing a moderately significant impact on CCU. However, 'DLC.count', along with other variables like 'Required.age', 'Negative.log', and 'Achievements', show no significant tendency, indicating an uncertain influence on CCU. 
+
+# Revenue
+
+Revenue, indicating a game's financial success, hinges on factors like price and sales volume. Higher-priced games can earn more, but the number of players buying the game is crucial. DLC (Downloadable Content) enhances appeal and can boost sales. Positive reviews and player recommendations also increase popularity and revenue. Understanding these dynamics is key for game developers and investors in the gaming market.<br>
+
+```{r lm revenue} 
+# Creating a linear model for Revenue
+model_revenue <- lm(Revenue.log ~  Owners.mean + Peak.CCU.log +
+                      Metacritic.score + Positive.log + Negative.log +
+                      Publishers.count, data = games)
+
+summary(model_revenue)
+
+```
+
+The model's findings reveal a strong tendency (***), indicating a highly significant correlation for 'Peak.CCU,' 'Positive.log,' 'Recommendations,' 'Owners.max,' and 'Owners.mean' with 'Revenue.' This suggests that these factors may influence revenue. In particular, 'Peak.CCU' and 'Recommendations' exhibit a very strong positive relationship with revenue, emphasizing their role in driving game popularity and, consequently, revenue generation. A certain tendency (**) is observed for 'Positive.log,' implying a some tendency impact on revenue.
+However, 'DLC.count,' along with other variables such as 'Median.playtime.forever,' 'Negative.log,' and 'Median.playtime.two.weeks,' do not exhibit a significant tendency, indicating an uncertain influence on revenue.
+
+
