@@ -6,7 +6,7 @@ This project is part of the course "Applied Machine Learning and Predictive Mode
 
 ## Dataset
 
-The Steam Games Dataset was downloaded from [Kaggle](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset) and contains data from 76987 games. It contains information about the game, the publisher, the release date, the price, the number of positive and negative reviews, the number of owners, and more.
+The [Steam Games Dataset](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset) was downloaded from Kaggle and contains data from 76987 games. It contains information about the game, the publisher, the release date, the price, the number of positive and negative reviews, the number of owners, and more.
 
 ## Project Structure
 

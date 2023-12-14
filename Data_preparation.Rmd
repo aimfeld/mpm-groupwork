@@ -15,8 +15,7 @@ library(stringr)
 
 # Data preparation
 
-The Steam Games Dataset was downloaded from [Kaggle](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset) and contains 76987 games.
-
+The [Steam Games Dataset](https://www.kaggle.com/datasets/fronkongames/steam-games-dataset) was downloaded from Kaggle and contains data from 76987 games
 First, let's load the data and remove unnecessary columns to reduce the size of the data set. We will also convert the release date to a suitable date format and convert some columns from string to boolean. Also, the esimtated owner ranges are split into min and max values, and the mean is computed. Finally, we compute the estimated revenue for each game by multiplying the mean number of owners with the price. These are rough estimates, since Valve does not publish the exact number of owners for each game.
 
 ```{r}
