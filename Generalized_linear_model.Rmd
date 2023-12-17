@@ -131,7 +131,7 @@ For this we can look at the top genres in our dataset.
 
 ```{r}
 
-#model >> developers is too much data
+#fitting the linux model
 linux_genres.model <- glm(Linux ~ Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "binomial", data = games)
 summary(linux_genres.model)
 ```
