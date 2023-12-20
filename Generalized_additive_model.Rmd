@@ -9,3 +9,46 @@ urlcolor: blue
 ```
 
 # Generalized additive model (GAM)
+
+In the previous chapter we looked at linear models. We learned how these models, with their simplicity and interpretability, serve as powerful tools for understanding relationships between variables. However, we also recognized that real-world data often exhibits complex, non-linear patterns that linear models may not adequately capture.
+
+In this chapter we will briefly look at Generalized Additive Models (GAMs). These models provide a flexible and robust framework for modelling relationships in data that may not be strictly linear. By allowing for non-linear relationships via smooth functions, GAMs provide a natural extension to linear models.
+
+### GAM vs LM
+
+Let us repeat the the analysis done on the linear model, predicting Peak.CCU.log with their respective predictors.
+
+```{r}
+library(mgcv)
+library(caret)
+
+# Remove NA values for partitioning
+games <- games[!is.na(games$Peak.CCU.log), ]
+
+# Create a data partition
+set.seed(42)
+index <- createDataPartition(games$Peak.CCU.log, p=0.85, list=FALSE)
+train_data <- games[index,]
+test_data <- games[-index,]
+
+# Fit the GAM on the training data
+peakccu_gam <- gam(Peak.CCU.log ~ s(Owners.mean) + s(Metacritic.score) + s(Recommendations) + s(Positive.log) + 
+                 s(Publishers.count) + s(Revenue.log), data = train_data)
+# Summary of the model
+summary(peakccu_gam)
+```
+As we can see we get a slight improvement over the linear model in the adjusted R-squared value, now 0.756 up from 0.699, indicating that the GAM model is a slightly better fit for our data, capturing more of the complex relationships between the variables.
+
+We have also split our data into train and test sets as practiced in the industry. We have thus far only used the training data, the test data could now be used to make predictions for Peak.CCU.log figures i.e. we can see what kind of predictor value slead to a higher concurrent player count.
+
+Lastly we can visualize an example of such a non-linear relationships by looking at the Peak CCU vs. Metacritic plot
+```{r}
+library(ggplot2)
+
+# Plot the model
+ggplot(data = games, aes(x = Metacritic.score, y = Peak.CCU.log)) +
+  geom_point(color = 'darkgrey') +
+  geom_smooth(color = 'black', size = 1.5) +
+  labs(x = "Metacritic score", y = "Peak CCU (log)", title = "GAM Model: Peak CCU vs. Metacritic Score")
+```
+
