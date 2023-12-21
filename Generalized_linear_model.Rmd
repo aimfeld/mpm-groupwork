@@ -63,7 +63,7 @@ Let us first take a look at what influences the DLC count variable. We want to l
 
 To fit a Poisson Model in R we will use the *glm()* function, where we can specify the distribution to be used with family = "poisson, or family = "quasipoisson"
 
-The standard Poisson regression model assumes that the variance increases linearly with the mean. However this is most often not the case for real data. More often than not count data variance is greater than what we would expect given the poisson distribution. This is called overdispersion. If we assume overdispersion in our we can deal with this by using the family = "quasipoisson" statement, which also estimates the degree of overdispersion.
+The standard Poisson regression model assumes that the variance increases linearly with the mean. However this is most often not the case for real data. More often than not count data variance is greater than what we would expect given the poisson distribution. This is called overdispersion. If we assume overdispersion in our we can deal with this by using the family = "quasipoisson" statement, which automatically estimates the degree of overdispersion.
 ```{r}
 #fitting the GLM model (DLC)
 dlc.model <- glm(DLC.count ~ Price + Metacritic.score + Category.Single.player + Category.Multi.player + Release.date + Lang.count + Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "quasipoisson", data = games)
@@ -76,7 +76,6 @@ So for Price we would take exp(0.03683) = 1.0375, the interpretation is that kee
 Exponents of negative estimates translate to values below 1, thus leading to a decrease of the predictor variable.
 Let us look at the Indie genre. The exponent of its negative estimate -0.4467 is 0.64. **This means if a game is categorized as an Indie title, it has 0.64 times less DLC compared to other non-Indie games**, with all other values in the model kept constant.
 
-
 We can see that Multiplayer games seemingly have a (comparatively) large positive effect on the amount DLC, compared to Singleplayer games not having a statistically significant effect on the amount of DLC.
 The higher the price and the higher the Metacritic score seems to have a small positive effect on the amount of DLC in this model. Meaning more expensive and well reviewed games tend to have more DLC. 
 
@@ -84,7 +83,7 @@ What is also interesting is looking at the genres. We can see that different gen
 
 Finally when looking at the release date estimate we can see that it is significant but less so than others. together with the small effect size (1.002e-04) we may make the conclusion that we don't find evidence that the amount of DLC has changed much over the years. Newer games do not have substantially more DLC compared to games in the past.
 
-For this model we choose the "quasipoisson" argument, as we can see the dispersion parameter is around 12.75, which means the variance is larger than expected (Poisson model assumes dispersion parameter of 1). Larger values hint at the poisson model not being well suited for this analysis. We would definitely have to delve deeper into this and take a look at the DLC metric with other models to verify our observations here.
+For this model we choose the "quasipoisson" argument, because we assume overdispersion in the data and this is confirmed, as we can see the dispersion parameter is larger than 1, at around 12.75 (The regualar Poisson model assumes dispersion parameter of 1). Larger dispersion values hint at the poisson model not being well suited for this analysis. We would definitely have to delve deeper into this and take a look at the DLC metric with other models to verify our observations here.
 
 *Note:* The model automatically deletes missing values. For example some games do not have a metacritic rating. Because we do not put a special emphasis on the reason for missing values, we just let the model delete them without further manual intervention.
 
@@ -102,13 +101,13 @@ print(paste("Deviance for null.model: ", round(deviance(null.model), 3)))
 As we can see compared to the null model with no predictor variables, our model performs better. Further investigation needs to be done to determine if this is a good overall value.
 
 
-In summary for the investor: Should our observations hold true with other models, potential investors can take away that having DLC in general is not negative. He need not be worried about the bad press surrounding the topic, this is not a general sentiment it seems.
+In summary for the investor: Should our observations hold true with other models, potential investors can take away that having DLC in general is not negative. He need not be worried about the bad press surrounding the topic, this is not a general sentiment it seems. DLC when executed well can lead to more success and thus revenue.
 
 
 ## The binomial model
 
 This dataset contains a few interesting areas to apply a binomial model.
-PC games are usually developed primarlily for Windows, with Mac and Linux operating systems considered second rate.
+PC games are usually developed primarily for Windows, with Mac and Linux operating systems considered second rate.
 
 
 Let us look at what predictors could be relevant to see if a game supports Linux or not.
@@ -126,7 +125,7 @@ For this we can look at the top genres in our dataset.
 
 ```{r}
 
-#model >> developers is too much data
+#fitting the linux model
 linux_genres.model <- glm(Linux ~ Genre.Indie + Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "binomial", data = games)
 summary(linux_genres.model)
 ```
