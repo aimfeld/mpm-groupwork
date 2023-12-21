@@ -1,8 +1,8 @@
 ---
 output:
-  pdf_document: default
   html_document:
     code_folding: hide
+  pdf_document: default
 urlcolor: blue
 ---
 
@@ -22,6 +22,7 @@ str(games)
 ```
 
 # Linear model
+
 A Linear Model is a statistical method used to model the relationship between a dependent (target) variable and one or more independent variables. The basic idea of a linear model is to represent the dependent variable as a linear combination of the independent variables. Linear models can be extended to consider multiple independent variables and then it is called multiple linear model.
 
 A linear regression model typically utilizes count and continuous data. For binary data, more suitable models are available. Below, the data types are briefly described:
@@ -39,6 +40,34 @@ There are possible questions, which we can have a look at it with the linear mod
 
 Peak Concurrent Users (CCU) is a critical metric for gauging a game's popularity, reflecting the highest number of players online at the same time. It's an essential indicator for assessing a game's appeal and success. Understanding CCU helps identify what drives player engagement in the competitive gaming landscape.<br>
 
+### Simple Model
+
+First we start with a simple model and take only one predictor and start with the variable revenue. We wanna predict if the revenue increases with a higher Peak CCU.  
+
+```{r simple lm ccu}
+df <- games[, c("Peak.CCU.log", "Revenue.log")]
+
+# Creating a simple linear model
+m <- lm(Peak.CCU.log ~ Revenue.log, data = df)
+
+# Plot
+plot(df$Revenue.log, df$Peak.CCU.log, pch = 20, col = 'lightblue',
+     xlab = "Revenue.log", ylab = "Peak.CCU.log")
+
+# Regression line
+abline(m, col = 'blue', lwd = 2)  
+
+```
+
+The scatter plot reveals a positive correlation between Revenue.log and Peak.CCU.log, as indicated by the upward slope of the regression line. However, the widespread dispersion of data points suggests variability that extends beyond what is explained by revenue alone.
+
+```{r simple lm ccu summary}
+summary(m)
+```
+In the linear model, the intercept value of around -6.38 suggests that if the Revenue.log were zero, which is impossible as the logarithm of zero is undefined, the expected Peak.CCU.log would be -6.38. The slope coefficient of 0.65 indicates that for each unit increase in Revenue.log, there is an average increase of 0.65 units in Peak.CCU.log. Even though there is strong evidence that Revenue.log might have an impact on the Peak.CCU.log. The R-squared value is only of approximately 0.391, implying that other factors influencing user numbers remain unaccounted for.
+
+Therefore we are now adjusting our linear model, so that we can increase the R-squared value and adding more predictors.  
+
 
 ```{r lm ccu}
 # Creating a linear model for Peak Concurrent Users (CCU)
@@ -51,6 +80,7 @@ summary(model)
 
 ```
 ### Interpretation
+
 This linear regression analysis reveals key factors driving the popularity of video games, as indicated by peak concurrent users. Notably, the model highlights several significant predictors of a game's success. High Metacritic scores, positive user reviews, a diverse range of publishers, player versus player (PvP) features, and strong recommendations are all positively correlated with higher peak concurrent users. Interestingly, more widely owned games show a slight negative impact on peak CCU, possibly reflecting market saturation.
 
 From an investment perspective, the analysis underscores the importance of critical acclaim, positive user reception, and PvP elements in driving a game's popularity. The strong statistical significance of these factors suggests they are reliable indicators of a game's potential success. With about 70% of the variance in peak CCU explained by these variables, investors can make more informed decisions on which games or gaming companies to back. This model offers a valuable tool for understanding the dynamics of the gaming market and identifying promising investment opportunities.
@@ -70,6 +100,7 @@ summary(model_revenue)
 
 ```
 ### Interpretation
+
 Key findings include the strong correlation between player engagement (measured by peak concurrent users) and game revenue, emphasizing the importance of investing in games that actively engage players. User feedback, both positive and negative, significantly impacts revenue, highlighting the value of games that generate active community discussion. Additionally, critical acclaim, indicated by Metacritic scores, is a vital factor in a game's profitability. The study also suggests that broader distribution and multiple publishing partners can enhance revenue. Overall, for investors, prioritizing games with high player engagement, active community interaction, critical acclaim, and broad distribution is a strategic approach to maximize returns in the gaming industry.
 
 
