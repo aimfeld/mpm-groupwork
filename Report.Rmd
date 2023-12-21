@@ -1,14 +1,17 @@
 ---
 title: "Group Project for Applied Machine Learning and Predictive Modelling 1"
 author: "Michael Jung, Michelle Peter & Adrian Imfeld"
-date: \today
+date: "\today"
 output:
   html_document:
-    toc: yes
+    toc: true
     toc_float: true
     toc_depth: 3
     number_sections: true
     code_folding: hide
+  pdf_document:
+    toc: true
+    toc_depth: '3'
 urlcolor: blue
 ---
 

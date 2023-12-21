@@ -1,0 +1,1711 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Group Project for Applied Machine Learning and Predictive Modelling 1},
+  pdfauthor={Michael Jung, Michelle Peter \& Adrian Imfeld},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Group Project for Applied Machine Learning and Predictive
+Modelling 1}
+\author{Michael Jung, Michelle Peter \& Adrian Imfeld}
+\date{oday}
+
+\begin{document}
+\maketitle
+
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\newpage
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+In the digital age, the gaming industry has emerged as a dynamic and
+influential sector, captivating audiences worldwide. With its rapid
+growth, it has become a lucrative market for investors. This project
+aims to delve into the gaming ecosystem, focusing on Steam, a leading
+digital distribution platform for PC gaming. By analyzing a
+comprehensive dataset of Steam games, we intend to provide insightful
+recommendations to potential investors, guiding them towards promising
+opportunities within this vibrant industry.
+
+Steam, developed by Valve Corporation, stands as a cornerstone in the PC
+gaming world. It's not just a platform for buying games; it's a
+community hub for gamers, developers, and publishers. Our dataset
+encompasses a wide range of information, including game attributes like
+`Name', `Price', `Genre', `Release Date', and `Peak Concurrent Users
+(CCU)', as well as critical reception data like `Metacritic Score' and
+`User Score'. These elements provide a holistic view of each game's
+performance and reception in the market.
+
+The heart of this project is to harness data science techniques to
+analyze the Steam dataset, aiming to identify trends, patterns, and
+correlations that can inform investment decisions. By examining factors
+like player engagement (`Average Playtime'), popularity (`Peak CCU'),
+and critical reception (`Metacritic Score'), we can pinpoint games,
+genres, or publishers that have the potential for high returns.
+Additionally, understanding the dynamics of game pricing, age ratings,
+and platform compatibility (Windows, Mac, Linux) offers a comprehensive
+view of market demands and consumer preferences.
+
+Our analysis will extend beyond individual games to encompass genres,
+publishers, and game categories. This broader view allows us to
+recommend market segments that show promise for growth or stability. By
+exploring connections between game tags, genres, and user engagement
+metrics, we can identify niche markets or upcoming trends that might be
+particularly attractive to investors.
+
+Utilizing advanced data analytics methods, including machine learning
+algorithms, we will create models that predict game success based on
+historical data. These models will aid in identifying key factors that
+contribute to a game's popularity and financial success. The outcome
+will be a set of tailored recommendations for potential investors,
+highlighting games, genres, and publishers with the highest potential
+for profitable investment in the flourishing gaming market.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(stringr)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-preparation}{%
+\section{Data preparation}\label{data-preparation}}
+
+The Steam Games Dataset was downloaded from
+\href{https://www.kaggle.com/datasets/fronkongames/steam-games-dataset}{Kaggle}
+and contains 76987 games.
+
+First, let's load the data and remove unnecessary columns to reduce the
+size of the data set. We will also convert the release date to a
+suitable date format and convert some columns from string to boolean.
+Also, the esimtated owner ranges are split into min and max values, and
+the mean is computed. Finally, we compute the estimated revenue for each
+game by multiplying the mean number of owners with the price. These are
+rough estimates, since Valve does not publish the exact number of owners
+for each game.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}data/games.csv\textquotesingle{}}\NormalTok{)}
+
+\CommentTok{\# Remove unnecessary columns}
+\NormalTok{games }\OtherTok{\textless{}{-}}\NormalTok{ games }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}
+    \SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(About.the.game, Reviews, Header.image, Full.audio.languages, Developers,}
+\NormalTok{       Website, Support.url, Support.email, Metacritic.url, Notes, Screenshots, Movies))}
+
+\CommentTok{\# Convert release date to date format}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Release.date }\OtherTok{\textless{}{-}} \FunctionTok{as.Date}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Release.date, }\AttributeTok{format=}\StringTok{"\%b \%d, \%Y"}\NormalTok{)}
+
+\CommentTok{\# Convert booleans to 1 and 0 which is easier to handle for modelling}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Windows }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Windows }\SpecialCharTok{==} \StringTok{"True"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Mac }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Mac }\SpecialCharTok{==} \StringTok{"True"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Linux }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Linux }\SpecialCharTok{==} \StringTok{"True"}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+
+\CommentTok{\# Split the \textquotesingle{}Estimated.owners\textquotesingle{} column into min and max values}
+\NormalTok{owners.split }\OtherTok{\textless{}{-}} \FunctionTok{strsplit}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Estimated.owners, }\StringTok{" {-} "}\NormalTok{)}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Owners.min }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(owners.split, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{as.numeric}\NormalTok{(x[}\DecValTok{1}\NormalTok{]))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Owners.max }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(owners.split, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{as.numeric}\NormalTok{(x[}\DecValTok{2}\NormalTok{]))}
+
+\CommentTok{\# Compute the mean of the min and max values}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Owners.mean }\OtherTok{\textless{}{-}} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Owners.min, games}\SpecialCharTok{$}\NormalTok{Owners.max))}
+
+\CommentTok{\# Remove the original column}
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{select}\NormalTok{(games, }\SpecialCharTok{{-}}\NormalTok{Estimated.owners)}
+
+\CommentTok{\# Compute the estimated revenue for each game}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Revenue }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Owners.mean }\SpecialCharTok{*}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Price}
+
+\CommentTok{\# Add log{-}transforms for extremely right{-}skewed variables}
+\CommentTok{\# Revenue is extremely right{-}skewed, so we will use the log of revenue instead}
+\NormalTok{games }\OtherTok{\textless{}{-}}\NormalTok{ games }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Revenue.log =} \FunctionTok{ifelse}\NormalTok{(Revenue }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\FunctionTok{log}\NormalTok{(Revenue), }\ConstantTok{NA}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Peak.CCU.log =} \FunctionTok{ifelse}\NormalTok{(Peak.CCU }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\FunctionTok{log}\NormalTok{(Peak.CCU), }\ConstantTok{NA}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Positive.log =} \FunctionTok{ifelse}\NormalTok{(Positive }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\FunctionTok{log}\NormalTok{(Positive), }\ConstantTok{NA}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Negative.log =} \FunctionTok{ifelse}\NormalTok{(Negative }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\FunctionTok{log}\NormalTok{(Negative), }\ConstantTok{NA}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+After some cleanup, the data looks like this (only a small subset of
+variables is shown):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(games }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{c}\NormalTok{(AppID, Name, Release.date, Price, Metacritic.score)), }\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}rllrr@{}}
+\toprule\noalign{}
+AppID & Name & Release.date & Price & Metacritic.score \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+20200 & Galactic Bowling & 2008-10-21 & 19.99 & 0 \\
+655370 & Train Bandit & 2017-10-12 & 0.99 & 0 \\
+1732930 & Jolt Project & 2021-11-17 & 4.99 & 0 \\
+1355720 & Henosis™ & 2020-07-23 & 5.99 & 0 \\
+1139950 & Two Weeks in Painland & 2020-02-03 & 0.00 & 0 \\
+\end{longtable}
+
+From the data given, we also compute additional variables that might be
+useful for our analysis, such as the number of supported languages.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Count the number of languages}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.count }\OtherTok{\textless{}{-}} \FunctionTok{str\_count}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\StringTok{","}\NormalTok{) }\SpecialCharTok{+} \DecValTok{1}
+
+\CommentTok{\# Adjusting for empty brackets}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.count[games}\SpecialCharTok{$}\NormalTok{Supported.languages }\SpecialCharTok{==} \StringTok{"[]"}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
+
+\CommentTok{\# Check for specific language support of the most common languages}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.English }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"English"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.Spanish }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"Spanish"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.Chinese }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"Chinese"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.Russian }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"Russian"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.German }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"German"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.Portuguese }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"Portuguese"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.French }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"French"}\NormalTok{, x)))}
+\NormalTok{games}\SpecialCharTok{$}\NormalTok{Lang.Italian }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Supported.languages, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{grepl}\NormalTok{(}\StringTok{"Italian"}\NormalTok{, x)))}
+
+\CommentTok{\# Remove the original column}
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{select}\NormalTok{(games, }\SpecialCharTok{{-}}\NormalTok{Supported.languages)}
+\end{Highlighting}
+\end{Shaded}
+
+Some numeric columns contain 0 instead of NA values, which we will
+replace with NA. Otherwise, the mean of these columns would be biased.
+This is somewhat poorly documented, but hints can be found in the code
+and the discussion section of the
+\href{https://www.kaggle.com/datasets/fronkongames/steam-games-dataset/data}{Kaggle
+Data Card}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ (col }\ControlFlowTok{in} \FunctionTok{c}\NormalTok{(}\StringTok{"Peak.CCU"}\NormalTok{, }\StringTok{"Metacritic.score"}\NormalTok{, }\StringTok{"User.score"}\NormalTok{, }\StringTok{"Positive"}\NormalTok{, }\StringTok{"Negative"}\NormalTok{,}
+              \StringTok{"Average.playtime.forever"}\NormalTok{, }\StringTok{"Average.playtime.two.weeks"}\NormalTok{,}
+              \StringTok{"Median.playtime.forever"}\NormalTok{, }\StringTok{"Median.playtime.two.weeks"}\NormalTok{)) \{}
+    \CommentTok{\# Replace 0 with NA in the specified column}
+\NormalTok{    games[[col]][games[[col]] }\SpecialCharTok{==} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+A few publishers produce many games, while most publishers only produce
+a few games. We will create a new column that contains the number of
+games produced by each publisher. These are the top 3 publishers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{games }\OtherTok{\textless{}{-}}\NormalTok{ games }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Publishers }\SpecialCharTok{!=} \StringTok{""}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Publishers) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Publishers.count =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ungroup}\NormalTok{()}
+
+\CommentTok{\# Show the top publishers}
+\NormalTok{publisher.counts }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(}\FunctionTok{table}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Publishers), }\AttributeTok{decreasing=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(publisher.counts, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Var1 & Freq \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Big Fish Games & 480 \\
+8floor & 255 \\
+SEGA & 176 \\
+\end{longtable}
+
+We will also create dummy variables for the top 10 genres and categories
+(shown below are the top 3). The tags are somewhat redundant with the
+genres, so we will not use them.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Split the \textquotesingle{}Genres\textquotesingle{} column into individual genres and count them}
+\NormalTok{genre.counts }\OtherTok{\textless{}{-}}\NormalTok{ games }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Genres }\SpecialCharTok{!=} \StringTok{""}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{separate\_rows}\NormalTok{(Genres, }\AttributeTok{sep =} \StringTok{","}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{count}\NormalTok{(Genres, }\AttributeTok{name =} \StringTok{"Count"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Count))}
+
+\NormalTok{top.genres }\OtherTok{\textless{}{-}} \FunctionTok{head}\NormalTok{(genre.counts, }\DecValTok{10}\NormalTok{)}
+
+\CommentTok{\# For each of the top genres, create a dummy variable}
+\ControlFlowTok{for}\NormalTok{(genre }\ControlFlowTok{in} \FunctionTok{head}\NormalTok{(top.genres}\SpecialCharTok{$}\NormalTok{Genres)) \{}
+\NormalTok{    games[[}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Genre."}\NormalTok{, genre)]] }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(genre, games}\SpecialCharTok{$}\NormalTok{Genres))}
+\NormalTok{\}}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(top.genres, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Genres & Count \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Indie & 52723 \\
+Casual & 31329 \\
+Action & 31289 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{category.counts }\OtherTok{\textless{}{-}}\NormalTok{ games }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(Categories }\SpecialCharTok{!=} \StringTok{""}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{separate\_rows}\NormalTok{(Categories, }\AttributeTok{sep =} \StringTok{","}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{count}\NormalTok{(Categories, }\AttributeTok{name =} \StringTok{"Count"}\NormalTok{)  }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Count))}
+
+\NormalTok{top.categories }\OtherTok{\textless{}{-}} \FunctionTok{head}\NormalTok{(category.counts, }\DecValTok{10}\NormalTok{)}
+
+\CommentTok{\# For each of the top genres, create a dummy variable}
+\ControlFlowTok{for}\NormalTok{(category }\ControlFlowTok{in}\NormalTok{ top.categories}\SpecialCharTok{$}\NormalTok{Categories) \{}
+\NormalTok{    games[[}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Category."}\NormalTok{, category)]] }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(category, games}\SpecialCharTok{$}\NormalTok{Categories))}
+\NormalTok{\}}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(top.categories, }\DecValTok{3}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Categories & Count \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Single-player & 70551 \\
+Steam Achievements & 34399 \\
+Steam Cloud & 17602 \\
+\end{longtable}
+
+Finally, we store the cleaned and enriched data set for further
+analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write.csv}\NormalTok{(games, }\StringTok{\textquotesingle{}data/games\_clean.csv\textquotesingle{}}\NormalTok{, }\AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exploratory-data-analysis-eda}{%
+\section{Exploratory data analysis
+(EDA)}\label{exploratory-data-analysis-eda}}
+
+Before we dive into data analysis, we need to do some exploratory data
+analysis (EDA) to get a sense of what the data look like. This will help
+us to understand the data and to identify any potential problems with
+the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{column\_classes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{Release.date =} \StringTok{"Date"}\NormalTok{)}
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}data/games\_clean.csv\textquotesingle{}}\NormalTok{, }\AttributeTok{colClasses =}\NormalTok{ column\_classes)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{distribution-of-key-variables}{%
+\subsection{Distribution of key
+variables}\label{distribution-of-key-variables}}
+
+Let's have a look at the distribution of the key variables in our
+dataset: revenue, peak concurrent users (CCU), metacritic score, user
+score, positive votes, and negative votes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{))}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Revenue, }\AttributeTok{main =} \StringTok{"Revenue"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Metacritic.score, }\AttributeTok{main =} \StringTok{"Metacritic score"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{User.score, }\AttributeTok{main =} \StringTok{"User score"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Positive, }\AttributeTok{main =} \StringTok{"Positive votes"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Negative, }\AttributeTok{main =} \StringTok{"Negative votes"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Peak.CCU, }\AttributeTok{main =} \StringTok{"Peak CCU"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+It is evident that the revenue, peak CCU, positive votes, and negative
+votes variables are extremely right skewed. This is not surprising as
+most games do not attract much attention, but a few games generate
+massive revenue and user engagement. By using a log-transform, we can
+make the distribution of these variables more symmetric, although we
+still see some right-skewness. This may be important for modelling later
+on.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{))}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Revenue.log, }\AttributeTok{main =} \StringTok{"Revenue (log)"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Positive.log, }\AttributeTok{main =} \StringTok{"Positive votes (log)"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Negative.log, }\AttributeTok{main =} \StringTok{"Negative votes (log)"}\NormalTok{)}
+\FunctionTok{boxplot}\NormalTok{(games}\SpecialCharTok{$}\NormalTok{Peak.CCU.log, }\AttributeTok{main =} \StringTok{"Peak CCU (log)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-32-1.pdf}
+
+\hypertarget{relationship-between-key-variables}{%
+\subsection{Relationship between key
+variables}\label{relationship-between-key-variables}}
+
+Using pair plots on the key variables, we can see that there is a
+positive relationship between revenue and peak CCU, metacritic score,
+positive votes and negative votes. While it seems counter-intuitive that
+there is a positive relationship between revenue and negative votes,
+this is likely due to the fact that games that attract more users are
+likely to receive more negative votes as well. The relationship between
+revenue and user score is less clear, but a higher user score seems to
+be associated lower negative votes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Revenue.log"}\NormalTok{, }\StringTok{"Peak.CCU.log"}\NormalTok{, }\StringTok{"Metacritic.score"}\NormalTok{, }\StringTok{"User.score"}\NormalTok{, }\StringTok{"Positive.log"}\NormalTok{, }\StringTok{"Negative.log"}\NormalTok{)}
+\FunctionTok{pairs}\NormalTok{(games[, features], }\AttributeTok{panel=}\NormalTok{panel.smooth, }\AttributeTok{lwd=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-34-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Loading the data set}
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}data/games\_clean.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Checking the structure of the dataset}
+\FunctionTok{str}\NormalTok{(games)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    75404 obs. of  59 variables:
+##  $ AppID                              : int  20200 655370 1732930 1355720 1139950 1469160 1659180 1968760 1178150 320150 ...
+##  $ Name                               : chr  "Galactic Bowling" "Train Bandit" "Jolt Project" "Henosis™" ...
+##  $ Release.date                       : chr  "2008-10-21" "2017-10-12" "2021-11-17" "2020-07-23" ...
+##  $ Peak.CCU                           : int  NA NA NA NA NA 68 3 2 1 NA ...
+##  $ Required.age                       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Price                              : num  19.99 0.99 4.99 5.99 0 ...
+##  $ DLC.count                          : int  0 0 0 0 0 0 1 0 0 0 ...
+##  $ Windows                            : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Mac                                : int  0 1 0 1 1 0 0 0 0 1 ...
+##  $ Linux                              : int  0 0 0 1 0 0 0 0 0 1 ...
+##  $ Metacritic.score                   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ User.score                         : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Positive                           : int  6 53 NA 3 50 87 21 NA 76 225 ...
+##  $ Negative                           : int  11 5 NA NA 8 49 7 NA 6 45 ...
+##  $ Score.rank                         : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Achievements                       : int  30 12 0 0 17 0 62 0 25 32 ...
+##  $ Recommendations                    : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Average.playtime.forever           : int  NA NA NA NA NA NA NA NA NA 703 ...
+##  $ Average.playtime.two.weeks         : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Median.playtime.forever            : int  NA NA NA NA NA NA NA NA NA 782 ...
+##  $ Median.playtime.two.weeks          : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Publishers                         : chr  "Perpetual FX Creative" "Wild Rooster" "Campião Games" "Odd Critter Games" ...
+##  $ Categories                         : chr  "Single-player,Multi-player,Steam Achievements,Partial Controller Support" "Single-player,Steam Achievements,Full controller support,Steam Leaderboards,Remote Play on Phone,Remote Play on"| __truncated__ "Single-player" "Single-player,Full controller support" ...
+##  $ Genres                             : chr  "Casual,Indie,Sports" "Action,Indie" "Action,Adventure,Indie,Strategy" "Adventure,Casual,Indie" ...
+##  $ Tags                               : chr  "Indie,Casual,Sports,Bowling" "Indie,Action,Pixel Graphics,2D,Retro,Arcade,Score Attack,Minimalist,Comedy,Singleplayer,Fast-Paced,Casual,Funny"| __truncated__ "" "2D Platformer,Atmospheric,Surreal,Mystery,Puzzle,Survival,Adventure,Linear,Singleplayer,Experimental,Platformer"| __truncated__ ...
+##  $ Owners.min                         : num  0 0 0 0 0 50000 0 0 0 50000 ...
+##  $ Owners.max                         : num  2e+04 2e+04 2e+04 2e+04 2e+04 1e+05 2e+04 2e+04 2e+04 1e+05 ...
+##  $ Owners.mean                        : num  10000 10000 10000 10000 10000 75000 10000 10000 10000 75000 ...
+##  $ Revenue                            : num  199900 9900 49900 59900 0 ...
+##  $ Revenue.log                        : num  12.2 9.2 10.8 11 NA ...
+##  $ Peak.CCU.log                       : num  NA NA NA NA NA ...
+##  $ Positive.log                       : num  1.79 3.97 NA 1.1 3.91 ...
+##  $ Negative.log                       : num  2.4 1.61 NA NA 2.08 ...
+##  $ Lang.count                         : int  1 10 2 11 2 1 3 2 10 9 ...
+##  $ Lang.English                       : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Lang.Spanish                       : int  0 1 0 1 1 0 0 0 1 1 ...
+##  $ Lang.Chinese                       : int  0 1 0 1 0 0 0 0 1 0 ...
+##  $ Lang.Russian                       : int  0 1 0 1 0 0 1 0 1 1 ...
+##  $ Lang.German                        : int  0 1 0 1 0 0 0 1 1 1 ...
+##  $ Lang.Portuguese                    : int  0 1 1 1 0 0 0 0 0 1 ...
+##  $ Lang.French                        : int  0 1 0 1 0 0 0 0 1 1 ...
+##  $ Lang.Italian                       : int  0 1 0 1 0 0 0 0 1 1 ...
+##  $ Publishers.count                   : int  1 4 1 1 1 1 2 35 26 3 ...
+##  $ Genre.Indie                        : int  1 1 1 1 1 0 1 0 0 1 ...
+##  $ Genre.Casual                       : int  1 0 0 1 0 1 0 1 0 0 ...
+##  $ Genre.Action                       : int  0 1 1 0 0 0 0 0 0 1 ...
+##  $ Genre.Adventure                    : int  0 0 1 1 1 1 0 0 1 1 ...
+##  $ Genre.Simulation                   : int  0 0 0 0 0 0 0 0 1 0 ...
+##  $ Genre.Strategy                     : int  0 0 1 0 0 1 1 0 1 0 ...
+##  $ Category.Single.player             : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Category.Steam.Achievements        : int  1 1 0 0 1 0 1 0 1 1 ...
+##  $ Category.Steam.Cloud               : int  0 0 0 0 0 0 1 1 0 1 ...
+##  $ Category.Full.controller.support   : int  0 1 0 1 0 0 0 0 1 0 ...
+##  $ Category.Multi.player              : int  1 0 0 0 0 1 0 0 0 0 ...
+##  $ Category.Partial.Controller.Support: int  1 0 0 0 0 0 0 0 0 1 ...
+##  $ Category.Steam.Trading.Cards       : int  0 0 0 0 0 0 0 0 0 1 ...
+##  $ Category.PvP                       : int  0 0 0 0 0 1 0 0 0 0 ...
+##  $ Category.Co.op                     : int  0 0 0 0 0 1 0 0 0 0 ...
+##  $ Category.Online.PvP                : int  0 0 0 0 0 1 0 0 0 0 ...
+\end{verbatim}
+
+\hypertarget{linear-model}{%
+\section{Linear model}\label{linear-model}}
+
+A Linear Model is a statistical method used to model the relationship
+between a dependent (target) variable and one or more independent
+variables. The basic idea of a linear model is to represent the
+dependent variable as a linear combination of the independent variables.
+Linear models can be extended to consider multiple independent variables
+and then it is called multiple linear model.
+
+A linear regression model typically utilizes count and continuous data.
+For binary data, more suitable models are available. Below, the data
+types are briefly described:
+
+\begin{itemize}
+\tightlist
+\item
+  Binary Data: Consists of values such as `True' / `False' or `1' / `0'.
+  An example of binary data is whether a certain programming language is
+  supported or not.
+\item
+  Count Data: Comprises integer values (0, 1, 2, 3, \ldots) that
+  represent the number of occurrences of something. For instance, the
+  number of downloadable content (DLC) packs a game has can be
+  categorized as count data.
+\item
+  Continuous Data: Encompasses any value within a given range. An
+  example of continuous data is the amount of time a person has spent
+  playing a particular game.
+\end{itemize}
+
+There are possible questions, which we can have a look at it with the
+linear model:
+
+\begin{itemize}
+\tightlist
+\item
+  What factors influence the Peak Concurrent Users (CCU) of games on
+  Steam?
+\item
+  What factors contribute to the financial success of a game, as
+  measured by its revenue?
+\end{itemize}
+
+\hypertarget{peak-concurrent-users-ccu}{%
+\subsection{Peak Concurrent Users
+(CCU)}\label{peak-concurrent-users-ccu}}
+
+Peak Concurrent Users (CCU) is a critical metric for gauging a game's
+popularity, reflecting the highest number of players online at the same
+time. It's an essential indicator for assessing a game's appeal and
+success. Understanding CCU helps identify what drives player engagement
+in the competitive gaming landscape.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creating a linear model for Peak Concurrent Users (CCU)}
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Peak.CCU.log }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Owners.mean }\SpecialCharTok{+}\NormalTok{ Metacritic.score }\SpecialCharTok{+}\NormalTok{ Positive.log }\SpecialCharTok{+} 
+\NormalTok{              Publishers.count }\SpecialCharTok{+}\NormalTok{ Category.PvP }\SpecialCharTok{+}\NormalTok{ Recommendations }\SpecialCharTok{+}
+\NormalTok{              Revenue.log, }\AttributeTok{data =}\NormalTok{ games)}
+
+\CommentTok{\# Displaying the model summary}
+\FunctionTok{summary}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Peak.CCU.log ~ Owners.mean + Metacritic.score + 
+##     Positive.log + Publishers.count + Category.PvP + Recommendations + 
+##     Revenue.log, data = games)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.3768 -0.8761 -0.0925  0.7655  7.1160 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      -8.227e+00  3.085e-01 -26.663  < 2e-16 ***
+## Owners.mean      -3.293e-08  1.552e-08  -2.122   0.0339 *  
+## Metacritic.score  2.605e-02  2.851e-03   9.138  < 2e-16 ***
+## Positive.log      6.682e-01  2.861e-02  23.353  < 2e-16 ***
+## Publishers.count  3.668e-03  5.369e-04   6.832 1.02e-11 ***
+## Category.PvP      5.603e-01  7.335e-02   7.638 3.01e-14 ***
+## Recommendations   8.072e-06  1.055e-06   7.650 2.75e-14 ***
+## Revenue.log       2.723e-01  2.751e-02   9.899  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.335 on 2807 degrees of freedom
+##   (72589 observations deleted due to missingness)
+## Multiple R-squared:  0.6956, Adjusted R-squared:  0.6949 
+## F-statistic: 916.4 on 7 and 2807 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\hypertarget{interpretation}{%
+\subsubsection{Interpretation}\label{interpretation}}
+
+This linear regression analysis reveals key factors driving the
+popularity of video games, as indicated by peak concurrent users.
+Notably, the model highlights several significant predictors of a game's
+success. High Metacritic scores, positive user reviews, a diverse range
+of publishers, player versus player (PvP) features, and strong
+recommendations are all positively correlated with higher peak
+concurrent users. Interestingly, more widely owned games show a slight
+negative impact on peak CCU, possibly reflecting market saturation.
+
+From an investment perspective, the analysis underscores the importance
+of critical acclaim, positive user reception, and PvP elements in
+driving a game's popularity. The strong statistical significance of
+these factors suggests they are reliable indicators of a game's
+potential success. With about 70\% of the variance in peak CCU explained
+by these variables, investors can make more informed decisions on which
+games or gaming companies to back. This model offers a valuable tool for
+understanding the dynamics of the gaming market and identifying
+promising investment opportunities.
+
+\hypertarget{revenue}{%
+\subsection{Revenue}\label{revenue}}
+
+Revenue, indicating a game's financial success, hinges on factors like
+price and sales volume. Higher-priced games can earn more, but the
+number of players buying the game is crucial. DLC (Downloadable Content)
+enhances appeal and can boost sales. Positive reviews and player
+recommendations also increase popularity and revenue. Understanding
+these dynamics is key for game developers and investors in the gaming
+market.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creating a linear model for Revenue}
+\NormalTok{model\_revenue }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Revenue.log }\SpecialCharTok{\textasciitilde{}}\NormalTok{  Owners.mean }\SpecialCharTok{+}\NormalTok{ Peak.CCU.log }\SpecialCharTok{+}
+\NormalTok{                      Metacritic.score }\SpecialCharTok{+}\NormalTok{ Positive.log }\SpecialCharTok{+}\NormalTok{ Negative.log }\SpecialCharTok{+}
+\NormalTok{                      Publishers.count, }\AttributeTok{data =}\NormalTok{ games)}
+
+\FunctionTok{summary}\NormalTok{(model\_revenue)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Revenue.log ~ Owners.mean + Peak.CCU.log + Metacritic.score + 
+##     Positive.log + Negative.log + Publishers.count, data = games)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4006 -0.4870  0.0595  0.5304  4.0523 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      8.090e+00  1.625e-01  49.790  < 2e-16 ***
+## Owners.mean      4.837e-08  7.044e-09   6.867 8.04e-12 ***
+## Peak.CCU.log     9.360e-02  1.186e-02   7.893 4.19e-15 ***
+## Metacritic.score 1.735e-02  2.140e-03   8.109 7.56e-16 ***
+## Positive.log     3.769e-01  2.409e-02  15.643  < 2e-16 ***
+## Negative.log     4.163e-01  2.279e-02  18.263  < 2e-16 ***
+## Publishers.count 9.406e-04  3.522e-04   2.671  0.00761 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.8643 on 2806 degrees of freedom
+##   (72591 observations deleted due to missingness)
+## Multiple R-squared:  0.7906, Adjusted R-squared:  0.7902 
+## F-statistic:  1766 on 6 and 2806 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\hypertarget{interpretation-1}{%
+\subsubsection{Interpretation}\label{interpretation-1}}
+
+Key findings include the strong correlation between player engagement
+(measured by peak concurrent users) and game revenue, emphasizing the
+importance of investing in games that actively engage players. User
+feedback, both positive and negative, significantly impacts revenue,
+highlighting the value of games that generate active community
+discussion. Additionally, critical acclaim, indicated by Metacritic
+scores, is a vital factor in a game's profitability. The study also
+suggests that broader distribution and multiple publishing partners can
+enhance revenue. Overall, for investors, prioritizing games with high
+player engagement, active community interaction, critical acclaim, and
+broad distribution is a strategic approach to maximize returns in the
+gaming industry.
+
+\hypertarget{generalized-linear-models-glms}{%
+\section{Generalized linear models
+(GLMs)}\label{generalized-linear-models-glms}}
+
+Generalized Linear Models (GLMs) are statistical models that can be used
+to predict the relationship between a response variable and one or more
+predictor variables. For our video game dataset, GLMs can be used to
+predict the relationship between a game's success and various factors
+such as the game's genre, platform, and critical reception.
+
+Suppose we are interested in predicting which factors influence a given
+game's chances of receiving a good user rating. In this case, we could
+consider the user score as our response variable and we could look at
+data such as price, popularity and genre as our predictor variables.
+
+GLMs are useful because they can handle a wide range of data, including
+binary, count, and continuous data. Here are some examples of each type
+of data:
+
+\begin{itemize}
+\tightlist
+\item
+  Binary data: Values such as ``True'' / ``False'' or 1/0. An example
+  for binary data would be if a certain language supported or not.
+\item
+  Count data: Integer values (0,1,2,3\ldots) that represent a number of
+  occurrences of something. An example for count data would be the
+  amount of DLCs a game has
+\item
+  Continuous data: Any value within a given range. An example for
+  continuous data would be the amount of time a person has spent playing
+  a certain game
+\end{itemize}
+
+\hypertarget{the-poisson-model-and-count-data}{%
+\subsection{The poisson model and count
+data}\label{the-poisson-model-and-count-data}}
+
+The Poisson model is a type of GLM that is used to analyze \textbf{count
+data}. It can be particularly useful when we expect our response
+variable not follow a normal distribution or if we suspect non-linear
+relationships with the predictor variables. Since we can't rely on our
+data being normally distributed and all relationships being linear, it
+may make sense to explore the count data assuming they have a poisson
+distribution.
+
+Let us look at some count data distributions in our dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DLC.count.nonzero }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{DLC.count[games}\SpecialCharTok{$}\NormalTok{DLC.count }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{]}
+\NormalTok{Peak.CCU.nonzero }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Peak.CCU[games}\SpecialCharTok{$}\NormalTok{Peak.CCU }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{]}
+\NormalTok{Positive.nonzero }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Positive[games}\SpecialCharTok{$}\NormalTok{Positive }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{]}
+\NormalTok{Negative.nonzero }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Negative[games}\SpecialCharTok{$}\NormalTok{Negative }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{]}
+\NormalTok{Achievements.nonzero }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Achievements[games}\SpecialCharTok{$}\NormalTok{Achievements }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{]}
+\NormalTok{Revenue.nonzero }\OtherTok{\textless{}{-}}\NormalTok{ games}\SpecialCharTok{$}\NormalTok{Revenue[games}\SpecialCharTok{$}\NormalTok{Revenue }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{]}
+
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{log}\NormalTok{(DLC.count.nonzero), }\AttributeTok{breaks =} \DecValTok{15}\NormalTok{, }\AttributeTok{main =} \StringTok{"Distribution of DLC.count"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"DLC.count"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{log}\NormalTok{(Peak.CCU.nonzero), }\AttributeTok{breaks =} \DecValTok{15}\NormalTok{, }\AttributeTok{main =} \StringTok{"Distribution of Peak.CCU"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Peak.CCU"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{log}\NormalTok{(Positive.nonzero), }\AttributeTok{breaks =} \DecValTok{15}\NormalTok{, }\AttributeTok{main =} \StringTok{"Distribution of Positive"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Positive"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{log}\NormalTok{(Negative.nonzero), }\AttributeTok{breaks =} \DecValTok{15}\NormalTok{, }\AttributeTok{main =} \StringTok{"Distribution of Negative"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Negative"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{log}\NormalTok{(Achievements.nonzero), }\AttributeTok{breaks =} \DecValTok{15}\NormalTok{, }\AttributeTok{main =} \StringTok{"Distribution of Achievements"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Achievements"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(}\FunctionTok{log}\NormalTok{(Revenue.nonzero), }\AttributeTok{breaks =} \DecValTok{15}\NormalTok{, }\AttributeTok{main =} \StringTok{"Distribution of Revenue"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Revenue"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-40-1.pdf}
+
+As we can see most of our selected count data does not follow a poisson
+distribution, except for maybe the positive reviews. From an investors
+perspective we feel that this metric is not that interesting to predict,
+as it brings limited value. Game reviews can be fickle and subject to
+much more than just the quality of the game.
+
+Ideally we would want to look at some more interesting variables such as
+the behavior and effects of the DLC count variable. Luckily the
+distribution does not have to exactly follow a poisson distribution for
+us to use a poisson model to explore this data.
+
+\emph{Important note:} In the exploratory data analysis we have seen
+that some of our data is very skewed an thus we log-transformed some
+variables. This process can change a count variable to a continuous
+variable and thus no longer making it suitable for a poisson model. Lets
+say a game has 150 positive reviews. The log-transformed value will no
+longer be 150 but perhaps 3.4568 which is no longer a count.
+
+Now there are workarounds to this such as rounding to the nearest
+integer, but this comes with loss of information. After exploring what
+affects the revenue and peak concurrent users variables we receive
+inconclusive information with a poisson model. We thus make the decision
+to stick only to actual count data such as the DLC count.
+
+\hypertarget{downloadable-content-dlc}{%
+\subsubsection{Downloadable content
+(DLC)}\label{downloadable-content-dlc}}
+
+DLC represents extra game content in form of new missions, maps or
+items, usually released after the game has launched. In recent years DLC
+has come under fire from the gaming community. The argument is that
+developers are trying milk customers by withholding content upon game
+release in order to then release said content as DLC later down the road
+and make more money. This can lead to negative reviews and have negative
+impact on sales. However not all DLC is like this so let's explore.
+
+Let us first take a look at what influences the DLC count variable. We
+want to look at which variables lead to higher amounts of DLC. For this
+we will consider the Price, Metacritic score, if the game is either
+Singleplayer or Multiplayer as well as the top genres and other
+variables.
+
+To fit a Poisson Model in R we will use the \emph{glm()} function, where
+we can specify the distribution to be used with family = ``poisson, or
+family =''quasipoisson''
+
+The standard Poisson regression model assumes that the variance
+increases linearly with the mean. However this is most often not the
+case for real data. More often than not count data variance is greater
+than what we would expect given the poisson distribution. This is called
+overdispersion. If we assume overdispersion in our we can deal with this
+by using the family = ``quasipoisson'' statement, which also estimates
+the degree of overdispersion.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#fitting the GLM model (DLC)}
+\NormalTok{dlc.model }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(DLC.count }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Price }\SpecialCharTok{+}\NormalTok{ Metacritic.score }\SpecialCharTok{+}\NormalTok{ Category.Single.player }\SpecialCharTok{+}\NormalTok{ Category.Multi.player }\SpecialCharTok{+}\NormalTok{ Release.date }\SpecialCharTok{+}\NormalTok{ Lang.count }\SpecialCharTok{+}\NormalTok{ Genre.Indie }\SpecialCharTok{+}\NormalTok{ Genre.Casual }\SpecialCharTok{+}\NormalTok{ Genre.Action }\SpecialCharTok{+}\NormalTok{ Genre.Adventure }\SpecialCharTok{+}\NormalTok{ Genre.Simulation }\SpecialCharTok{+}\NormalTok{ Genre.Strategy, }\AttributeTok{family =} \StringTok{"quasipoisson"}\NormalTok{, }\AttributeTok{data =}\NormalTok{ games)}
+\FunctionTok{summary}\NormalTok{(dlc.model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = DLC.count ~ Price + Metacritic.score + Category.Single.player + 
+##     Category.Multi.player + Release.date + Lang.count + Genre.Indie + 
+##     Genre.Casual + Genre.Action + Genre.Adventure + Genre.Simulation + 
+##     Genre.Strategy, family = "quasipoisson", data = games)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -10.113   -1.484   -0.942    0.334   42.802  
+## 
+## Coefficients:
+##                          Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)            -2.664e+00  6.606e-01  -4.032 5.63e-05 ***
+## Price                   3.737e-02  2.720e-03  13.743  < 2e-16 ***
+## Metacritic.score        1.652e-02  4.319e-03   3.826 0.000132 ***
+## Category.Single.player -1.798e-02  1.930e-01  -0.093 0.925783    
+## Category.Multi.player   8.431e-01  8.930e-02   9.442  < 2e-16 ***
+## Release.date            5.311e-05  3.270e-05   1.624 0.104493    
+## Lang.count              4.915e-02  8.216e-03   5.983 2.39e-09 ***
+## Genre.Indie            -2.324e-01  9.426e-02  -2.465 0.013742 *  
+## Genre.Casual           -3.324e-01  1.652e-01  -2.012 0.044302 *  
+## Genre.Action            1.447e-01  9.249e-02   1.564 0.117884    
+## Genre.Adventure        -6.536e-01  9.846e-02  -6.638 3.63e-11 ***
+## Genre.Simulation        4.128e-01  1.050e-01   3.930 8.65e-05 ***
+## Genre.Strategy         -4.281e-01  1.019e-01  -4.199 2.74e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for quasipoisson family taken to be 11.59257)
+## 
+##     Null deviance: 28600  on 3832  degrees of freedom
+## Residual deviance: 18599  on 3820  degrees of freedom
+##   (71571 observations deleted due to missingness)
+## AIC: NA
+## 
+## Number of Fisher Scoring iterations: 6
+\end{verbatim}
+
+Interpreting the summary output the Poisson model is not as
+straightforward as the interpretation of linear models. The output
+estimates need to be taken as the exponent (e\^{}Estimate). This is
+because this model uses a log link function. This can easily be done in
+R with the exp() function.
+
+So for Price we would take exp(0.03683) = 1.0375, the interpretation is
+that keeping all other values constant, \textbf{increasing the price by
+one unit would yield a 1.0375 times increase of the DLC count variable}.
+
+Exponents of negative estimates translate to values below 1, thus
+leading to a decrease of the predictor variable. Let us look at the
+Indie genre. The exponent of its negative estimate -0.4467 is 0.64.
+\textbf{This means if a game is categorized as an Indie title, it has
+0.64 times less DLC compared to other non-Indie games}, with all other
+values in the model kept constant.
+
+We can see that Multiplayer games seemingly have a (comparatively) large
+positive effect on the amount DLC, compared to Singleplayer games not
+having a statistically significant effect on the amount of DLC. The
+higher the price and the higher the Metacritic score seems to have a
+small positive effect on the amount of DLC in this model. Meaning more
+expensive and well reviewed games tend to have more DLC.
+
+What is also interesting is looking at the genres. We can see that
+different genres have either positive or negative effects on the amount
+of DLC. Indie and Casual games tend to have less DLC compared to Action
+and Simulation games.
+
+Finally when looking at the release date estimate we can see that it is
+significant but less so than others. together with the small effect size
+(1.002e-04) we may make the conclusion that we don't find evidence that
+the amount of DLC has changed much over the years. Newer games do not
+have substantially more DLC compared to games in the past.
+
+For this model we choose the ``quasipoisson'' argument, as we can see
+the dispersion parameter is around 12.75, which means the variance is
+larger than expected (Poisson model assumes dispersion parameter of 1).
+Larger values hint at the poisson model not being well suited for this
+analysis. We would definitely have to delve deeper into this and take a
+look at the DLC metric with other models to verify our observations
+here.
+
+\emph{Note:} The model automatically deletes missing values. For example
+some games do not have a metacritic rating. Because we do not put a
+special emphasis on the reason for missing values, we just let the model
+delete them without further manual intervention.
+
+\hypertarget{how-good-is-our-model}{%
+\paragraph{How good is our model?}\label{how-good-is-our-model}}
+
+It can be tricky to determine how good our model fits the data, because
+the quasipoisson family does not have a well defined likelyhood
+function. It is not really possible to determine values such as AIC, BIC
+and pseudo R-squared. What we can do is calculate the deviance, lower
+deviance being a better fit
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# checking how "good" our model fits with the deviance}
+\NormalTok{null.model }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(DLC.count }\SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\AttributeTok{family =} \StringTok{"quasipoisson"}\NormalTok{, }\AttributeTok{data =}\NormalTok{ games)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Deviance for dlc.model: "}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{deviance}\NormalTok{(dlc.model), }\DecValTok{3}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Deviance for dlc.model:  18598.617"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Deviance for null.model: "}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{deviance}\NormalTok{(null.model), }\DecValTok{3}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Deviance for null.model:  344977.259"
+\end{verbatim}
+
+As we can see compared to the null model with no predictor variables,
+our model performs better. Further investigation needs to be done to
+determine if this is a good overall value.
+
+In summary for the investor: Should our observations hold true with
+other models, potential investors can take away that having DLC in
+general is not negative. He need not be worried about the bad press
+surrounding the topic, this is not a general sentiment it seems.
+
+\hypertarget{the-binomial-model}{%
+\subsection{The binomial model}\label{the-binomial-model}}
+
+This dataset contains a few interesting areas to apply a binomial model.
+PC games are usually developed primarlily for Windows, with Mac and
+Linux operating systems considered second rate.
+
+Let us look at what predictors could be relevant to see if a game
+supports Linux or not. We apply the following binomial logistic
+regression.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{linux.model }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Linux }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Release.date }\SpecialCharTok{+}\NormalTok{ Metacritic.score }\SpecialCharTok{+}\NormalTok{ Price, }\AttributeTok{family =} \StringTok{"binomial"}\NormalTok{, }\AttributeTok{data =}\NormalTok{ games)}
+\FunctionTok{summary}\NormalTok{(linux.model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Linux ~ Release.date + Metacritic.score + Price, 
+##     family = "binomial", data = games)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.0883  -0.8294  -0.7539   1.4554   2.1221  
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)      -3.280e+00  5.237e-01  -6.263 3.77e-10 ***
+## Release.date      6.139e-05  2.672e-05   2.298   0.0216 *  
+## Metacritic.score  2.096e-02  3.700e-03   5.666 1.47e-08 ***
+## Price            -1.787e-02  3.608e-03  -4.954 7.28e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 4497.1  on 3832  degrees of freedom
+## Residual deviance: 4447.5  on 3829  degrees of freedom
+##   (71571 observations deleted due to missingness)
+## AIC: 4455.5
+## 
+## Number of Fisher Scoring iterations: 4
+\end{verbatim}
+
+From the output we can see that the higher (newer) the release date of a
+game is, the higher the odds are a given game supports the linux
+platform. We can also see that Linux supported games tend to be cheaper,
+indicated by the negative estimate on the Price.
+
+It could also be interesting to look at which types of games usually
+support Linux. For this we can look at the top genres in our dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#model \textgreater{}\textgreater{} developers is too much data}
+\NormalTok{linux\_genres.model }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Linux }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Genre.Indie }\SpecialCharTok{+}\NormalTok{ Genre.Casual }\SpecialCharTok{+}\NormalTok{ Genre.Action }\SpecialCharTok{+}\NormalTok{ Genre.Adventure }\SpecialCharTok{+}\NormalTok{ Genre.Simulation }\SpecialCharTok{+}\NormalTok{ Genre.Strategy, }\AttributeTok{family =} \StringTok{"binomial"}\NormalTok{, }\AttributeTok{data =}\NormalTok{ games)}
+\FunctionTok{summary}\NormalTok{(linux\_genres.model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Linux ~ Genre.Indie + Genre.Casual + Genre.Action + 
+##     Genre.Adventure + Genre.Simulation + Genre.Strategy, family = "binomial", 
+##     data = games)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.6644  -0.6057  -0.5495  -0.4270   2.3405  
+## 
+## Coefficients:
+##                  Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)      -2.22200    0.02785 -79.778  < 2e-16 ***
+## Genre.Indie       0.71491    0.02661  26.870  < 2e-16 ***
+## Genre.Casual     -0.07957    0.02194  -3.627 0.000287 ***
+## Genre.Action     -0.22736    0.02241 -10.145  < 2e-16 ***
+## Genre.Adventure  -0.01629    0.02200  -0.740 0.459117    
+## Genre.Simulation -0.12695    0.02765  -4.591 4.41e-06 ***
+## Genre.Strategy    0.10862    0.02681   4.051 5.10e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 60895  on 75403  degrees of freedom
+## Residual deviance: 60002  on 75397  degrees of freedom
+## AIC: 60016
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+From the output we can see that typically Indie and Strategy games are
+associated with higher chances of being supported by Linux. The other,
+perhaps more mainstream categories are less likely to have Linux support
+as indicated by their negative estimates.
+
+\hypertarget{generalized-additive-model-gam}{%
+\section{Generalized additive model
+(GAM)}\label{generalized-additive-model-gam}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(e1071)}
+\FunctionTok{library}\NormalTok{(caret)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(pROC)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{support-vector-machine-svm}{%
+\section{Support vector machine
+(SVM)}\label{support-vector-machine-svm}}
+
+In this chapter, we will use support vector machines (SVMs) to predict
+revenue and classify indie games. SVMs are supervised learning models
+that analyze data used for classification and regression analysis. Given
+a set of training examples, each marked as belonging to one of two
+categories, an SVM training algorithm builds a model that assigns new
+examples to one category or the other.
+
+SVMs are particularly effective in cases where the number of dimensions
+is greater than the number of samples, making them suitable for data
+with a large number of features. However, unlike some other models, SVMs
+do not provide transparency and are often considered as a ``black box''
+in terms of interpretability. Also, handling missing data can be tricky
+with SVMs. We will omit rows with missing values, since meaningful
+imputation is not possible for the chosen predictors.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{col\_classes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{Release.date =} \StringTok{"Date"}\NormalTok{)}
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}data/games\_clean.csv\textquotesingle{}}\NormalTok{, }\AttributeTok{colClasses =}\NormalTok{ col\_classes)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{predicting-revenue}{%
+\subsection{Predicting revenue}\label{predicting-revenue}}
+
+As predictors for revenue, we will use the following features: peak
+concurrent users, metacritic score, positive votes, negative votes,
+number of games published by the publisher, and genre (indie, action,
+adventure, simulation, strategy). For features with extremely
+right-skewed distributions, we will use the logarithm, although SVMs
+probably could handle the skewness just fine.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{revenue\_features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Peak.CCU.log"}\NormalTok{, }\StringTok{"Metacritic.score"}\NormalTok{, }\StringTok{"Positive.log"}\NormalTok{, }\StringTok{"Negative.log"}\NormalTok{, }\StringTok{"Publishers.count"}\NormalTok{,}
+              \StringTok{"Genre.Indie"}\NormalTok{, }\StringTok{"Genre.Action"}\NormalTok{, }\StringTok{"Genre.Adventure"}\NormalTok{, }\StringTok{"Genre.Simulation"}\NormalTok{, }\StringTok{"Genre.Strategy"}\NormalTok{)}
+
+\NormalTok{revenue\_Xy }\OtherTok{\textless{}{-}}\NormalTok{ games[, }\FunctionTok{c}\NormalTok{(revenue\_features, }\StringTok{"Revenue.log"}\NormalTok{)]}
+
+\CommentTok{\# Replace NA values with 0}
+\CommentTok{\# df[revenue\_features] \textless{}{-} lapply(df[revenue\_features], function(x) replace(x, is.na(x), 0))}
+
+\NormalTok{revenue\_Xy }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(revenue\_Xy)  }\CommentTok{\# Remove rows with NA values}
+
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\NormalTok{indices }\OtherTok{\textless{}{-}} \FunctionTok{createDataPartition}\NormalTok{(revenue\_Xy}\SpecialCharTok{$}\NormalTok{Revenue.log, }\AttributeTok{p =}\NormalTok{ .}\DecValTok{85}\NormalTok{, }\AttributeTok{list =}\NormalTok{ F)}
+\NormalTok{revenue\_train }\OtherTok{\textless{}{-}}\NormalTok{ revenue\_Xy[indices,]}
+\NormalTok{revenue\_test }\OtherTok{\textless{}{-}}\NormalTok{ revenue\_Xy[}\SpecialCharTok{{-}}\NormalTok{indices,]}
+\end{Highlighting}
+\end{Shaded}
+
+Since only high quality games are reviewed by professional critics, we
+select only a small subset of games which were actually reviewed by
+Metacritic. We are still left with 2806 games for training and testing.
+Of these, 85\% will be used for training and 15\% for testing.
+
+We will use 5-fold cross-validation (without repetition) on the training
+set to tune the cost parameter C. The C parameter in an SVM model
+controls the trade-off between achieving a high margin and classifying
+the training data correctly. It essentially regulates the penalty for
+misclassifying data points.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{C =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{))}
+\NormalTok{trctrl }\OtherTok{\textless{}{-}} \FunctionTok{trainControl}\NormalTok{(}\AttributeTok{method =} \StringTok{"repeatedcv"}\NormalTok{, }\AttributeTok{number =} \DecValTok{5}\NormalTok{, }\AttributeTok{repeats =} \DecValTok{1}\NormalTok{)}
+
+\NormalTok{revenue\_svm }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(}
+\NormalTok{    Revenue.log }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ revenue\_train, }\AttributeTok{method =} \StringTok{"svmLinear"}\NormalTok{,}
+    \AttributeTok{trControl =}\NormalTok{ trctrl,}
+    \AttributeTok{preProcess =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"scale"}\NormalTok{),}
+    \AttributeTok{tuneGrid =}\NormalTok{ grid}
+\NormalTok{)}
+
+\NormalTok{revenue\_svm}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Support Vector Machines with Linear Kernel 
+## 
+## 2394 samples
+##   10 predictor
+## 
+## Pre-processing: centered (10), scaled (10) 
+## Resampling: Cross-Validated (5 fold, repeated 1 times) 
+## Summary of sample sizes: 1915, 1914, 1916, 1915, 1916 
+## Resampling results across tuning parameters:
+## 
+##   C      RMSE       Rsquared   MAE      
+##    0.01  0.8569257  0.7940434  0.6504104
+##    0.10  0.8567682  0.7938641  0.6501181
+##    1.00  0.8568494  0.7938217  0.6502010
+##   10.00  0.8568121  0.7938315  0.6501934
+## 
+## RMSE was used to select the optimal model using the smallest value.
+## The final value used for the model was C = 0.1.
+\end{verbatim}
+
+Looking at the output, we can see that the model with C = 0.1 has the
+lowest RMSE. However, the difference between the models is very small,
+so the cost parameter really does not matter much in this case.
+
+Let's now apply the model to the test data and evaluate the results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{revenue\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(revenue\_svm, revenue\_test)}
+\FunctionTok{plot}\NormalTok{(revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log, revenue\_pred, }\AttributeTok{xlab =} \StringTok{"Actual"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Predicted"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Revenue (log) {-} Actual vs Predicted"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\FunctionTok{lm}\NormalTok{(revenue\_pred }\SpecialCharTok{\textasciitilde{}}\NormalTok{ revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log), }\DecValTok{1}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-53-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mse }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{((revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log }\SpecialCharTok{{-}}\NormalTok{ revenue\_pred)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{mae }\OtherTok{\textless{}{-}} \FunctionTok{MAE}\NormalTok{(revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log, revenue\_pred)}
+\NormalTok{rmse }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log, revenue\_pred)}
+\NormalTok{r2 }\OtherTok{\textless{}{-}} \FunctionTok{R2}\NormalTok{(revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log, revenue\_pred, form }\OtherTok{\textless{}{-}} \StringTok{"traditional"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{" MAE:"}\NormalTok{, mae, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"MSE:"}\NormalTok{, mse, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+    \StringTok{"RMSE:"}\NormalTok{, rmse, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"R{-}squared:"}\NormalTok{, r2, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  MAE: 0.659719 
+##  MSE: 0.7485698 
+##  RMSE: 0.8651993 
+##  R-squared: 0.7460531
+\end{verbatim}
+
+During cross-validation, the model achieved an R-squared value of 0.79.
+On the test set, the R-squared is a bit lower (0.73), but still pretty
+good. Since we used the logarithm of revenue, we get an evenly
+distributed scatter-plot showing a high correlation between the actual
+and predicted values.
+
+We can use a QQ plot to see whether our predictions are more or less of
+the same quality across the entire range of revenue. The plot shows that
+the model predicts revenue quite well accross the range, although
+revenue in the lower range is slightly underpredicted.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Creating a QQ plot with base R}
+\FunctionTok{qqplot}\NormalTok{(revenue\_test}\SpecialCharTok{$}\NormalTok{Revenue.log, revenue\_pred, }\AttributeTok{main =} \StringTok{"QQ Plot of Revenue (log)"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Quantiles of Actual Revenue"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Quantiles of Predicted Revenue"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)  }\CommentTok{\# Adding a 45{-}degree reference line}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-54-1.pdf}
+
+In summary we can say that the SVM model predicts revenue quite well,
+with an R-squared of 0.73 on the test set. The most important predictors
+are the number votes (positive and negative), and the peak number of
+concurrent users. This is hardly surprising, since the number of game
+owners is highly correlated both with these predictors and revenue.
+Therefore, this model may be of limited value as a revenue predictor,
+since the number of votes and peak concurrent users is probably not
+known before the game is widely sold, at which point the revenue is
+known. Further investigation is needed to determine whether these
+predictors are leading indicators of revenue, which may well be the case
+and make the model more useful.
+
+\hypertarget{indie-game-classification}{%
+\subsection{Indie game classification}\label{indie-game-classification}}
+
+Indie games, while numerous, might not generate as much revenue as
+mainstream or AAA titles. The higher marketing budgets, established fan
+bases, and larger development teams of AAA games often translate into
+higher sales and revenue. However, indie games can sometimes achieve
+significant success, especially if they offer unique gameplay,
+innovative mechanics, or compelling narratives.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{indie\_features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Revenue.log"}\NormalTok{, }\StringTok{"Owners.mean"}\NormalTok{, }\StringTok{"Peak.CCU.log"}\NormalTok{, }\StringTok{"Metacritic.score"}\NormalTok{, }\StringTok{"Positive.log"}\NormalTok{, }\StringTok{"Negative.log"}\NormalTok{, }\StringTok{"Publishers.count"}\NormalTok{)}
+\NormalTok{indie\_Xy }\OtherTok{\textless{}{-}}\NormalTok{ games[, }\FunctionTok{c}\NormalTok{(indie\_features, }\StringTok{"Genre.Indie"}\NormalTok{)]}
+\NormalTok{indie\_Xy}\SpecialCharTok{$}\NormalTok{Genre.Indie }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(indie\_Xy}\SpecialCharTok{$}\NormalTok{Genre.Indie, }\AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"IndieNo"}\NormalTok{, }\StringTok{"IndieYes"}\NormalTok{))}
+
+\NormalTok{indie\_Xy }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(indie\_Xy)  }\CommentTok{\# Remove rows with NA values}
+
+\NormalTok{indie\_stats }\OtherTok{\textless{}{-}}\NormalTok{ indie\_Xy }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Genre.Indie) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\StringTok{"Count"} \OtherTok{=} \FunctionTok{n}\NormalTok{(), }\StringTok{"Revenue"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(}\FunctionTok{exp}\NormalTok{(Revenue.log))), }\StringTok{"Owners"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(Owners.mean)),}
+              \StringTok{"Metacritic"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Metacritic.score}\StringTok{\textasciigrave{}}\NormalTok{)),}
+              \StringTok{"Peak CCU"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(}\FunctionTok{exp}\NormalTok{(Peak.CCU.log))), }\StringTok{"Positive Votes"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(}\FunctionTok{exp}\NormalTok{(Positive.log))),}
+              \StringTok{"Negative Votes"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(}\FunctionTok{exp}\NormalTok{(Negative.log))), }\StringTok{"Publisher count"} \OtherTok{=} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(Publishers.count)))}
+
+\FunctionTok{kable}\NormalTok{(indie\_stats, }\AttributeTok{format.args =} \FunctionTok{list}\NormalTok{(}\AttributeTok{big.mark =} \StringTok{"\textquotesingle{}"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1143}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0571}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1048}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0952}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1048}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0857}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1429}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1429}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1524}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Genre.Indie
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Count
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Revenue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Owners
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Metacritic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Peak CCU
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Positive Votes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Negative Votes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Publisher count
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+IndieNo & 1'350 & 28'225'701 & 1'176'996 & 74 & 1'856 & 15'594 & 2'111 &
+58 \\
+IndieYes & 1'463 & 10'337'889 & 584'293 & 74 & 444 & 9'094 & 805 & 21 \\
+\end{longtable}
+
+If we group our games by the indie genre, we see that we have roughly
+equal group sizes (1460 indie vs 1346 non-indie games). However, the
+average revenue of indie games is much lower than that of non-indie
+games (10 million vs 28 million USD). Indie games also have fewer owners
+and votes and their publishers release fewer games. Based on these
+differences, we should be able to classify indie games with a reasonable
+degree of accuracy.
+
+Again, we use 5-fold cross-validation (without repetition) on the
+training set, but this time without hyperparameter-tuning. We also
+calculate the necessary class probabilites for AUC-ROC analysis later
+on.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\NormalTok{indices }\OtherTok{\textless{}{-}} \FunctionTok{createDataPartition}\NormalTok{(indie\_Xy}\SpecialCharTok{$}\NormalTok{Genre.Indie, }\AttributeTok{p =}\NormalTok{ .}\DecValTok{85}\NormalTok{, }\AttributeTok{list =}\NormalTok{ F)}
+\NormalTok{indie\_train }\OtherTok{\textless{}{-}}\NormalTok{ indie\_Xy[indices,]}
+\NormalTok{indie\_test }\OtherTok{\textless{}{-}}\NormalTok{ indie\_Xy[}\SpecialCharTok{{-}}\NormalTok{indices,]}
+
+\NormalTok{trctrl }\OtherTok{\textless{}{-}} \FunctionTok{trainControl}\NormalTok{(}\AttributeTok{method =} \StringTok{"repeatedcv"}\NormalTok{, }\AttributeTok{number =} \DecValTok{5}\NormalTok{, }\AttributeTok{repeats =} \DecValTok{1}\NormalTok{, }\AttributeTok{classProbs =}\NormalTok{ T)}
+
+\NormalTok{indie\_svm }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(Genre.Indie }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ indie\_train, }\AttributeTok{method =} \StringTok{"svmLinear"}\NormalTok{,}
+                    \AttributeTok{trControl =}\NormalTok{ trctrl,}
+                    \AttributeTok{preProcess =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"scale"}\NormalTok{))}
+
+\NormalTok{indie\_svm}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Support Vector Machines with Linear Kernel 
+## 
+## 2392 samples
+##    7 predictor
+##    2 classes: 'IndieNo', 'IndieYes' 
+## 
+## Pre-processing: centered (7), scaled (7) 
+## Resampling: Cross-Validated (5 fold, repeated 1 times) 
+## Summary of sample sizes: 1913, 1914, 1913, 1915, 1913 
+## Resampling results:
+## 
+##   Accuracy   Kappa   
+##   0.7228181  0.442334
+## 
+## Tuning parameter 'C' was held constant at a value of 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Apply to Test Data}
+\NormalTok{indie\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(indie\_svm, }\AttributeTok{newdata =}\NormalTok{ indie\_test)}
+\FunctionTok{confusionMatrix}\NormalTok{(}\FunctionTok{table}\NormalTok{(indie\_pred, indie\_test}\SpecialCharTok{$}\NormalTok{Genre.Indie, }\AttributeTok{dnn =} \FunctionTok{c}\NormalTok{(}\StringTok{"Prediction"}\NormalTok{, }\StringTok{"Actual"}\NormalTok{)), }\AttributeTok{positive =} \StringTok{"IndieYes"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Actual
+## Prediction IndieNo IndieYes
+##   IndieNo      135       49
+##   IndieYes      67      170
+##                                           
+##                Accuracy : 0.7245          
+##                  95% CI : (0.6791, 0.7666)
+##     No Information Rate : 0.5202          
+##     P-Value [Acc > NIR] : <2e-16          
+##                                           
+##                   Kappa : 0.4461          
+##                                           
+##  Mcnemar's Test P-Value : 0.1145          
+##                                           
+##             Sensitivity : 0.7763          
+##             Specificity : 0.6683          
+##          Pos Pred Value : 0.7173          
+##          Neg Pred Value : 0.7337          
+##              Prevalence : 0.5202          
+##          Detection Rate : 0.4038          
+##    Detection Prevalence : 0.5629          
+##       Balanced Accuracy : 0.7223          
+##                                           
+##        'Positive' Class : IndieYes        
+## 
+\end{verbatim}
+
+The mean cross-validation accuracy of 0.72 generalizes well to the test
+set with an accuracy of 0.70. Negative predictions (NPV 0.74) are
+slightly more accurate than positive ones (PPV = 0.69). Sensitivity
+(0.80) is higher than specificity (0.60) as the model predicts IndieYes
+more often, resulting in higher more false positives (80) than false
+negatives (43).
+
+The ROC curve confirms that the model performs quite well, with an AUC
+of 0.81. An AUC of 0.5 means that the parameter is no better than random
+guessing (assuming balanced classes), while an AUC of 1.0 means that the
+parameter perfectly separates the two groups, regardless of the chosen
+threshold.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate probabilities}
+\NormalTok{indie\_prob }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(indie\_svm, }\AttributeTok{newdata =}\NormalTok{ indie\_test, }\AttributeTok{type =} \StringTok{"prob"}\NormalTok{)}
+
+\CommentTok{\# Extract probabilities for the positive class (assuming it\textquotesingle{}s the second column)}
+\NormalTok{prob\_positive\_class }\OtherTok{\textless{}{-}}\NormalTok{ indie\_prob[, }\DecValTok{2}\NormalTok{]}
+
+\CommentTok{\# Generate ROC curve}
+\NormalTok{roc\_curve }\OtherTok{\textless{}{-}} \FunctionTok{roc}\NormalTok{(indie\_test}\SpecialCharTok{$}\NormalTok{Genre.Indie, prob\_positive\_class)}
+\NormalTok{tpr }\OtherTok{\textless{}{-}}\NormalTok{ roc\_curve}\SpecialCharTok{$}\NormalTok{sensitivities  }\CommentTok{\# True Positive Rate}
+\NormalTok{fpr }\OtherTok{\textless{}{-}} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ roc\_curve}\SpecialCharTok{$}\NormalTok{specificities  }\CommentTok{\# False Positive Rate}
+
+\CommentTok{\# Plot ROC curve}
+\FunctionTok{plot}\NormalTok{(fpr, tpr, }\AttributeTok{type =} \StringTok{"l"}\NormalTok{, }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"False Positive Rate"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"True Positive Rate"}\NormalTok{,}
+     \AttributeTok{main =} \StringTok{"ROC Curve for Indie Game Classification"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\AttributeTok{a =} \DecValTok{0}\NormalTok{, }\AttributeTok{b =} \DecValTok{1}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{)  }\CommentTok{\# Diagonal reference line}
+
+\CommentTok{\# Calculate AUC}
+\NormalTok{auc\_value }\OtherTok{\textless{}{-}} \FunctionTok{auc}\NormalTok{(roc\_curve)}
+
+\CommentTok{\# Optionally, add AUC to the plot}
+\FunctionTok{text}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.2}\NormalTok{, }\FunctionTok{paste}\NormalTok{(}\StringTok{"AUC ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(auc\_value, }\DecValTok{2}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-58-1.pdf}
+
+From an investors perspective, it is interesting to note that indie
+games generate less revenue in general. However, the production and
+marketing cost is much lower than that of AAA games, so the return on
+investment (ROI) may be higher. Further analysis is needed to determine
+which indie games generate the most revenue. We could e.g.~look into
+indie games by genre, votes as leading indicators of revenue, or the
+effect of Metacritic scores on revenue.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(caret)}
+\FunctionTok{library}\NormalTok{(neuralnet)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{neural-network-nn}{%
+\section{Neural network (NN)}\label{neural-network-nn}}
+
+Neural networks excel in learning and modeling complex patterns, making
+them ideal for tasks like image and speech recognition, and natural
+language processing. Their layered structure allows them to handle a
+wide range of data types and problems. However, they require large
+datasets for effective training, making them less suitable in
+data-scarce situations. Their ``black box'' nature often makes it
+difficult to understand their decision-making process, which is a
+drawback in scenarios where explainability is crucial. Additionally,
+they can be resource-intensive and are prone to overfitting, performing
+well on training data but poorly on new, unseen data.
+
+Let's replicate the revenue prediction from the chapter on Support
+Vector Machines (SVMs), but this time using a neural network. We'll use
+the \texttt{neuralnet} package, which is a simple implementation of a
+feed-forward neural network with a single hidden layer. The
+\texttt{caret} package provides a convenient wrapper for the
+\texttt{neuralnet} package, allowing us to use the same workflow as with
+other models.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{col\_classes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{Release.date =} \StringTok{"Date"}\NormalTok{)}
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}data/games\_clean.csv\textquotesingle{}}\NormalTok{, }\AttributeTok{colClasses =}\NormalTok{ col\_classes)}
+\end{Highlighting}
+\end{Shaded}
+
+We use the same train-test split as in the SVM chapter, with the same
+seed for reproducibility. We also choose the same features as in the SVM
+chapter, and the same scaling method for numeric features. Again, we use
+5-fold cross-validation but without any tuning of the model parameters
+(e.g.~different hidden layer sizes, regularization parameters, etc),
+since we don't have a GPU to speed up the training. Note that scaling
+the numeric features is crucial for the neural network to work properly.
+Without any scaling, the network predicted the same value for all
+observations. Using min-max scaling works, but the network seems to
+converge faster with centering and scaling to the same variance.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numeric\_features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Peak.CCU.log"}\NormalTok{, }\StringTok{"Metacritic.score"}\NormalTok{, }\StringTok{"Positive.log"}\NormalTok{, }\StringTok{"Negative.log"}\NormalTok{, }\StringTok{"Publishers.count"}\NormalTok{)}
+\NormalTok{one\_hot\_features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Genre.Indie"}\NormalTok{, }\StringTok{"Genre.Action"}\NormalTok{, }\StringTok{"Genre.Adventure"}\NormalTok{, }\StringTok{"Genre.Simulation"}\NormalTok{, }\StringTok{"Genre.Strategy"}\NormalTok{)}
+\NormalTok{features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(numeric\_features, one\_hot\_features)}
+
+\NormalTok{games }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(games[, }\FunctionTok{c}\NormalTok{(features, }\StringTok{"Revenue.log"}\NormalTok{)])  }\CommentTok{\# Remove rows with NA values}
+\NormalTok{Xy }\OtherTok{\textless{}{-}}\NormalTok{ games}
+
+\CommentTok{\# Scaling the numeric features is crucial for the neural network to work properly}
+\NormalTok{preProcess\_values }\OtherTok{\textless{}{-}} \FunctionTok{preProcess}\NormalTok{(games[, numeric\_features], }\AttributeTok{method =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"scale"}\NormalTok{))}
+\NormalTok{scaled\_numeric }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(preProcess\_values, games[, numeric\_features])}
+\NormalTok{Xy }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(scaled\_numeric, games[, }\FunctionTok{c}\NormalTok{(one\_hot\_features, }\StringTok{"Revenue.log"}\NormalTok{)])}
+
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\NormalTok{indices }\OtherTok{\textless{}{-}} \FunctionTok{createDataPartition}\NormalTok{(Xy}\SpecialCharTok{$}\NormalTok{Revenue.log, }\AttributeTok{p =}\NormalTok{ .}\DecValTok{85}\NormalTok{, }\AttributeTok{list =}\NormalTok{ F)}
+\NormalTok{train }\OtherTok{\textless{}{-}}\NormalTok{ Xy[indices,]}
+\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ Xy[}\SpecialCharTok{{-}}\NormalTok{indices,]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{42}\NormalTok{)}
+\NormalTok{nn\_grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{.layer1=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{), }\AttributeTok{.layer2=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{), }\AttributeTok{.layer3=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{))}
+\NormalTok{train\_control }\OtherTok{\textless{}{-}} \FunctionTok{trainControl}\NormalTok{(}
+    \AttributeTok{method =} \StringTok{\textquotesingle{}cv\textquotesingle{}}\NormalTok{,}
+    \AttributeTok{number =} \DecValTok{5}\NormalTok{,}
+    \CommentTok{\# verboseIter = TRUE}
+\NormalTok{)}
+\NormalTok{games\_net }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ train[features],}
+    \AttributeTok{y =}\NormalTok{ train}\SpecialCharTok{$}\NormalTok{Revenue.log,}
+    \AttributeTok{stepmax =} \FloatTok{1e+06}\NormalTok{,}
+    \AttributeTok{method =} \StringTok{\textquotesingle{}neuralnet\textquotesingle{}}\NormalTok{,}
+    \AttributeTok{metric =} \StringTok{\textquotesingle{}Rsquared\textquotesingle{}}\NormalTok{,}
+    \AttributeTok{tuneGrid =}\NormalTok{ nn\_grid,}
+    \AttributeTok{trControl =}\NormalTok{ train\_control}
+\NormalTok{)}
+\NormalTok{games\_net}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Neural Network 
+## 
+## 2394 samples
+##   10 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 1916, 1914, 1917, 1914, 1915 
+## Resampling results:
+## 
+##   RMSE       Rsquared   MAE      
+##   0.8521481  0.7957499  0.6490267
+## 
+## Tuning parameter 'layer1' was held constant at a value of 1
+## Tuning
+##  parameter 'layer2' was held constant at a value of 0
+## Tuning parameter
+##  'layer3' was held constant at a value of 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# plot(games\_net) \# Works only if we have more than value for tuning}
+\end{Highlighting}
+\end{Shaded}
+
+Neural networks are overpowered for such a simple dataset and
+experimentation with different sizes of the hidden layer shows that a
+single neuron is sufficient. Indeed, cross-validation shows that larger
+hidden layers tends to overfit the data (1 neuron: R-squared = 0.794, 2
+neurons: R-squared = 0.770). Therefore, we'll use a single neuron in the
+hidden layer. Without GPU acceleration, cross-validating larger networks
+takes quite long. We have tried
+\href{https://topepo.github.io/caret/parallel-processing.html}{multicore-processing}
+with 11 cores instead of just 1 core by default, but the speedup was
+mediocre.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(games\_net}\SpecialCharTok{$}\NormalTok{finalModel, }\AttributeTok{rep =} \StringTok{"best"}\NormalTok{, }\AttributeTok{information =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-65-1.pdf}
+
+Compared to the cross-validation results of the SVM model (Rsquared =
+0.792), the neural network performs about the same (Rsquared = 0.794).
+Applying the final model from cross-validation, which is trained on the
+whole training set, we get the following results for the test set:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(games\_net}\SpecialCharTok{$}\NormalTok{finalModel, test[features])}
+\NormalTok{pred }\OtherTok{\textless{}{-}}\NormalTok{ pred}\SpecialCharTok{$}\NormalTok{net.result}
+
+\FunctionTok{plot}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{Revenue.log, pred, }\AttributeTok{xlab =} \StringTok{"Actual"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Predicted"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Revenue (log) {-} Actual vs Predicted"}\NormalTok{)}
+\FunctionTok{abline}\NormalTok{(}\FunctionTok{lm}\NormalTok{(pred }\SpecialCharTok{\textasciitilde{}}\NormalTok{ test}\SpecialCharTok{$}\NormalTok{Revenue.log), }\DecValTok{1}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Report_files/figure-latex/unnamed-chunk-66-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mse }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{((test}\SpecialCharTok{$}\NormalTok{Revenue.log }\SpecialCharTok{{-}}\NormalTok{ pred)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{mae }\OtherTok{\textless{}{-}} \FunctionTok{MAE}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{Revenue.log, pred)}
+\NormalTok{rmse }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{Revenue.log, pred)}
+\NormalTok{r2 }\OtherTok{\textless{}{-}} \FunctionTok{R2}\NormalTok{(test}\SpecialCharTok{$}\NormalTok{Revenue.log, pred, form }\OtherTok{\textless{}{-}} \StringTok{"traditional"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{" MAE:"}\NormalTok{, mae, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"MSE:"}\NormalTok{, mse, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{,}
+    \StringTok{"RMSE:"}\NormalTok{, rmse, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\StringTok{"R{-}squared:"}\NormalTok{, r2, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  MAE: 0.6558846 
+##  MSE: 0.7288021 
+##  RMSE: 0.8536991 
+##  R-squared: 0.7542941
+\end{verbatim}
+
+Again, we see about the same performance as with the SVM model. If
+anything, the neural network seems to generalizes slightly better to the
+test set (Rsquared = 0.794 vs 0.730 for the SVM model). Both of these
+methods are somewhat overkill for this dataset.
+
+In summary, this chapters focused on replicating the results from the
+SVM chapter using a neural network, rather than generating additional
+insights from an investors perspective. However, it's important to
+replicate results using different methods to ensure that the results are
+robust. In this case, we see that the neural network performs about the
+same as the SVM models.
+
+\hypertarget{optimization}{%
+\section{Optimization}\label{optimization}}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+\end{document}

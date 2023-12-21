@@ -42,27 +42,26 @@ Peak Concurrent Users (CCU) is a critical metric for gauging a game's popularity
 
 ### Simple Model
 
-First we start with a simple model and take only one predictor and start with the variable revenue. We wanna predict if the revenue increases with a higher Peak CCU.  
+We start with a simple model taking only one predictor, which is the variable Revenue.log. We want to predict if the Peak CCU increases with higher revenue.  
 
 ```{r simple lm ccu}
 df <- games[, c("Peak.CCU.log", "Revenue.log")]
 
 # Creating a simple linear model
-m <- lm(Peak.CCU.log ~ Revenue.log, data = df)
+simple_model <- lm(Peak.CCU.log ~ Revenue.log, data = df)
 
 # Plot
 plot(df$Revenue.log, df$Peak.CCU.log, pch = 20, col = 'lightblue',
      xlab = "Revenue.log", ylab = "Peak.CCU.log")
 
 # Regression line
-abline(m, col = 'blue', lwd = 2)  
-
+abline(simple_model, col = 'blue', lwd = 2)  
 ```
 
 The scatter plot reveals a positive correlation between Revenue.log and Peak.CCU.log, as indicated by the upward slope of the regression line. However, the widespread dispersion of data points suggests variability that extends beyond what is explained by revenue alone.
 
 ```{r simple lm ccu summary}
-summary(m)
+summary(simple_model)
 ```
 In the linear model, the intercept value of around -6.38 suggests that if the Revenue.log were zero, which is impossible as the logarithm of zero is undefined, the expected Peak.CCU.log would be -6.38. The slope coefficient of 0.65 indicates that for each unit increase in Revenue.log, there is an average increase of 0.65 units in Peak.CCU.log. Even though there is strong evidence that Revenue.log might have an impact on the Peak.CCU.log. The R-squared value is only of approximately 0.391, implying that other factors influencing user numbers remain unaccounted for.
 
