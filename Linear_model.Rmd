@@ -35,7 +35,7 @@ There are possible questions, which we can have a look at it with the linear mod
 - What factors influence the Peak Concurrent Users (CCU) of games on Steam? <br>
 - What factors contribute to the financial success of a game, as measured by its revenue? <br>
 
-# Peak Concurrent Users (CCU) 
+## Peak Concurrent Users (CCU) 
 
 Peak Concurrent Users (CCU) is a critical metric for gauging a game's popularity, reflecting the highest number of players online at the same time. It's an essential indicator for assessing a game's appeal and success. Understanding CCU helps identify what drives player engagement in the competitive gaming landscape.<br>
 
@@ -50,12 +50,13 @@ model <- lm(Peak.CCU.log ~ Owners.mean + Metacritic.score + Positive.log +
 summary(model)
 
 ```
+### Interpretation
 This linear regression analysis reveals key factors driving the popularity of video games, as indicated by peak concurrent users. Notably, the model highlights several significant predictors of a game's success. High Metacritic scores, positive user reviews, a diverse range of publishers, player versus player (PvP) features, and strong recommendations are all positively correlated with higher peak concurrent users. Interestingly, more widely owned games show a slight negative impact on peak CCU, possibly reflecting market saturation.
 
 From an investment perspective, the analysis underscores the importance of critical acclaim, positive user reception, and PvP elements in driving a game's popularity. The strong statistical significance of these factors suggests they are reliable indicators of a game's potential success. With about 70% of the variance in peak CCU explained by these variables, investors can make more informed decisions on which games or gaming companies to back. This model offers a valuable tool for understanding the dynamics of the gaming market and identifying promising investment opportunities.
 
 
-# Revenue
+## Revenue
 
 Revenue, indicating a game's financial success, hinges on factors like price and sales volume. Higher-priced games can earn more, but the number of players buying the game is crucial. DLC (Downloadable Content) enhances appeal and can boost sales. Positive reviews and player recommendations also increase popularity and revenue. Understanding these dynamics is key for game developers and investors in the gaming market.<br>
 
@@ -68,7 +69,7 @@ model_revenue <- lm(Revenue.log ~  Owners.mean + Peak.CCU.log +
 summary(model_revenue)
 
 ```
-
+### Interpretation
 Key findings include the strong correlation between player engagement (measured by peak concurrent users) and game revenue, emphasizing the importance of investing in games that actively engage players. User feedback, both positive and negative, significantly impacts revenue, highlighting the value of games that generate active community discussion. Additionally, critical acclaim, indicated by Metacritic scores, is a vital factor in a game's profitability. The study also suggests that broader distribution and multiple publishing partners can enhance revenue. Overall, for investors, prioritizing games with high player engagement, active community interaction, critical acclaim, and broad distribution is a strategic approach to maximize returns in the gaming industry.
 
 

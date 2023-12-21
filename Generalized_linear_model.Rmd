@@ -15,11 +15,6 @@ Generalized Linear Models (GLMs) are statistical models that can be used to pred
 
 Suppose we are interested in predicting which factors influence a given game's chances of receiving a good user rating. In this case, we could consider the user score as our response variable and we could look at data such as price, popularity and genre as our predictor variables.
 
-GLMs are useful because they can handle a wide range of data, including binary, count, and continuous data. Here are some examples of each type of data:
-
-- Binary data:      Values such as "True" / "False" or 1/0. An example for binary data would be if a certain language supported or not.
-- Count data:       Integer values (0,1,2,3...) that represent a number of occurrences of something. An example for count data would be the amount of DLCs a game has
-- Continuous data:  Any value within a given range. An example for continuous data would be the amount of time a person has spent playing a certain game
 
 ```{r include=FALSE}
 col_classes <- c(Release.date = "Date")
