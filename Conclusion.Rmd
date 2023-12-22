@@ -8,3 +8,33 @@ urlcolor: blue
 ```
 
 # Conclusion
+
+Based on the in-depth analysis and insights gained from the previous chapters, we can derive the following conclusions and recommendation. <br>
+
+**Significance of Game Features and Reviews:**<br>
+The analysis indicates that certain characteristics of a game such as PvP features, positive user reviews, and high Metacritic scores are strongly correlated with a game's success in terms of peak concurrent users (Peak CCU) and revenue. This underscores the importance of game quality and user satisfaction for the success of a game.<br>
+
+**Importance of Platform and Genre Selection:**<br>
+The data suggest that the choice of platform (e.g., support for Linux) and game genre are crucial factors for market success. Investors should pay attention to trends in these areas and invest in projects that align with current market tendencies.<br>
+
+**Impact of Publishers and DLCs:**<br>
+Games released by reputable publishers or supported with additional Downloadable Content (DLCs) tend to perform better. Therefore, investments in games with strong publishing partnerships or a roadmap for DLCs could be promising.<br>
+
+**Market Complexity:**<br>
+The application of various models such as GLMs, GAMs, and SVMs illustrates the complexity of the market. Individual factors alone are not sufficient to predict success. A holistic approach that considers various variables is required.
+
+## Recommendation
+Our recommendations highlight that many key factors for the success of a game become apparent only after its release:<br>
+
+**Focus on Games with High Engagement and Positive User Reviews:**<br>
+Games with high user numbers and positive reviews tend to generate higher revenue and should therefore be prioritized by investors.<br>
+
+**Investment in Games with High Metacritic Scores:** <br>
+A high Metacritic rating often correlates with financial success, making these games preferred investment targets.<br>
+
+**Consideration of Genre Popularity and DLCs:** <br>
+Investing in popular genres and games with high-quality downloadable content (DLCs) can also lead to increased revenue.<br>
+
+Given these factors, which are largely measurable only post-launch, it is crucial to make preventive, data-driven decisions. This requires comprehensive analysis of pre-launch indicators such as the strength of marketing campaigns, feedback at gaming fairs, pre-order numbers, and the general online attention a game generates before its release.
+<br>
+Furthermore, additional detailed analyses are necessary to gain deeper insights into this complex and rapidly changing market. Only by combining pre- and post-launch analyses can investors in the gaming sector make informed and future-proof decisions. 
