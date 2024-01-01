@@ -51,11 +51,11 @@ df <- games[, c("Peak.CCU.log", "Revenue.log")]
 simple_model <- lm(Peak.CCU.log ~ Revenue.log, data = df)
 
 # Plot
-plot(df$Revenue.log, df$Peak.CCU.log, pch = 20, col = 'lightblue',
+plot(df$Revenue.log, df$Peak.CCU.log, pch = 20,
      xlab = "Revenue.log", ylab = "Peak.CCU.log")
 
 # Regression line
-abline(simple_model, col = 'blue', lwd = 2)  
+abline(simple_model, col = 'red', lwd = 2)  
 ```
 
 The scatter plot reveals a positive correlation between Revenue.log and Peak.CCU.log, as indicated by the upward slope of the regression line. However, the widespread dispersion of data points suggests variability that extends beyond what is explained by revenue alone.

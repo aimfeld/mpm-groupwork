@@ -21,6 +21,7 @@ Let us repeat the the analysis done on the linear model, predicting Peak.CCU.log
 ```{r}
 library(mgcv)
 library(caret)
+games <- read.csv('data/games_clean.csv')
 
 # Remove NA values for partitioning
 games <- games[!is.na(games$Peak.CCU.log), ]
@@ -47,8 +48,8 @@ library(ggplot2)
 
 # Plot the model
 ggplot(data = games, aes(x = Metacritic.score, y = Peak.CCU.log)) +
-  geom_point(color = 'darkgrey') +
-  geom_smooth(color = 'black', size = 1.5) +
+  geom_point(color = 'black') +
+  geom_smooth(color = 'red', size = 1.5) +
   labs(x = "Metacritic score", y = "Peak CCU (log)", title = "GAM Model: Peak CCU vs. Metacritic Score")
 ```
 

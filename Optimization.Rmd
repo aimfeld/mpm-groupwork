@@ -8,30 +8,15 @@ urlcolor: blue
 ```{r child = 'Knitr_setup.Rmd'}
 ```
 
-# Optimization ((unfinished))
+# Optimization 
 
 When modelling optimizing and tuning the models is an important task to achieve proper results.
 Throughout this report we have deployed various different models and optimized them during modelling within the respective chapters. 
 
 Our documented findings display the final optimized results, some examples for optimization include:
 
-- Linear Models: Selecting relevant predictor variables and deciding whether to use log-transformed versions thereof
-- GAMs: Selecting relevant predictor variables and deciding whether to use log-transformed versions thereof
-- GLMs: Selecting relevant predictor variables and deciding whether to use log-transformed versions thereof
+- Linear Models: Selecting relevant predictor variables and deciding whether to use log-transformed versions thereof, to achieve a high model accuracy (e.g. adjusted R-squared).
+- GAMs: Selecting relevant predictor variables and deciding whether to use log-transformed versions thereof, to achieve a high model accuracy (e.g. adjusted R-squared).
+- GLMs: Selecting relevant predictor variables and deciding whether to use log-transformed versions thereof, to achieve a high model accuracy (e.g. Deviance).
 - Support Vector machines: Tuning the cost parameter
 - Neural networks: Tuning hyperparameters such as the amount of hidden layers.
-
-```{r}
-library(dbscan)
-library(fpc)
-
-# Select the columns for clustering
-genres <- games[, c("Genre.Action", "Genre.Indie", "Genre.Casual", "Genre.Adventure", "Genre.Simulation", "Genre.Strategy")]
-
-# Run DBSCAN on the subset
-cluster <- dbscan(games$Revenue, eps = 15, minPts = 4)
-cluster
-hullplot(games$revenue, cluster)
-
-```
-
