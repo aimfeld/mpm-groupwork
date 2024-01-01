@@ -14,12 +14,7 @@ urlcolor: blue
 games <- read.csv('data/games_clean.csv')
 ```
 
-```{r data cleaning, Include = FALSE}
 
-# Checking the structure of the dataset
-str(games)
-
-```
 
 # Linear model
 
