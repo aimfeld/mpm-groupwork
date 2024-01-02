@@ -36,11 +36,11 @@ urlcolor: blue
 # Michelle
 ```
 
-```{r child = 'Generalized_linear_model.Rmd'}
+```{r child = 'Generalized_additive_model.Rmd'}
 # Mike
 ```
 
-```{r child = 'Generalized_additive_model.Rmd'}
+```{r child = 'Generalized_linear_model.Rmd'}
 # Mike
 ```
 

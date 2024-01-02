@@ -14,7 +14,7 @@ In the previous chapter we looked at linear models. We learned how these models,
 
 In this chapter we will briefly look at Generalized Additive Models (GAMs). These models provide a flexible and robust framework for modelling relationships in data that may not be strictly linear. By allowing for non-linear relationships via smooth functions, GAMs provide a natural extension to linear models.
 
-### GAM vs LM
+## GAM vs LM
 
 Let us repeat the the analysis done on the linear model, predicting Peak.CCU.log with their respective predictors.
 
