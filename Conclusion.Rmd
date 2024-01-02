@@ -9,7 +9,7 @@ urlcolor: blue
 
 # Conclusion
 
-Based on the in-depth analysis and insights gained from the previous chapters, we can derive the following conclusions and recommendation. <br>
+Based on the in-depth analysis and insights gained from the previous chapters, we can derive the following conclusions and recommendations. <br>
 
 **Significance of Game Features and Reviews:**<br>
 The analysis indicates that certain characteristics of a game such as PvP features, positive user reviews, and high Metacritic scores are strongly correlated with a game's success in terms of peak concurrent users (Peak CCU) and revenue. This underscores the importance of game quality and user satisfaction for the success of a game.<br>
@@ -23,7 +23,7 @@ Games released by reputable publishers or supported with additional Downloadable
 **Market Complexity:**<br>
 The application of various models such as GLMs, GAMs, and SVMs illustrates the complexity of the market. Individual factors alone are not sufficient to predict success. A holistic approach that considers various variables is required.
 
-## Recommendation
+## Recommendations
 Our recommendations highlight that many key factors for the success of a game become apparent only after its release:<br>
 
 **Focus on Games with High Engagement and Positive User Reviews:**<br>

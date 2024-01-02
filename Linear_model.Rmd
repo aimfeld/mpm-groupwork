@@ -26,7 +26,7 @@ A linear regression model typically utilizes count and continuous data. For bina
 - Count Data: Comprises integer values (0, 1, 2, 3, ...) that represent the number of occurrences of something. For instance, the number of downloadable content (DLC) packs a game has can be categorized as count data.<br>
 - Continuous Data: Encompasses any value within a given range. An example of continuous data is the amount of time a person has spent playing a particular game.<br>
  
-There are possible questions, which we can have a look at it with the linear model:
+Certain questions can be examined using a linear model, for example:
 
 - Which factors influence the Peak Concurrent Users (CCU) of games on Steam? <br>
 - Which factors contribute to the financial success of a game, as measured by its revenue? <br>
@@ -60,7 +60,7 @@ summary(simple_model)
 ```
 In the linear model, the intercept value of around -6.38 suggests that if the Revenue.log were zero, which is impossible as the logarithm of zero is undefined, the expected Peak.CCU.log would be -6.38. The slope coefficient of 0.65 indicates that for each unit increase in Revenue.log, there is an average increase of 0.65 units in Peak.CCU.log. Even though there is strong evidence that Revenue.log might have an impact on the Peak.CCU.log. The R-squared value is only of approximately 0.391, implying that other factors influencing user numbers remain unaccounted for.
 
-Therefore we are now adjusting our linear model, so that we can increase the R-squared value and adding more predictors.  
+Therefore, we modify our linear model by including additional predictors to enhance the R-squared value. However, we are losing more observations, since some of the variables are not available for all games.
 
 
 ```{r lm ccu}
@@ -84,6 +84,8 @@ From an investment perspective, the analysis underscores the importance of criti
 
 Revenue, indicating a game's financial success, hinges on factors like price and sales volume. Higher-priced games can earn more, but the number of players buying the game is crucial. DLC (Downloadable Content) enhances appeal and can boost sales. Positive reviews and player recommendations also increase popularity and revenue. Understanding these dynamics is key for game developers and investors in the gaming market.<br>
 
+Let's use a linear model to explain revenue based on the following variables: number of owners (Owners.mean), peak concurrent users (Peak.CCU.log), critical acclaim (Metacritic.score), user feedback (Positive.log, Negative.log), and publisher size (Publishers.count).
+
 ```{r lm revenue} 
 # Creating a linear model for Revenue
 model_revenue <- lm(Revenue.log ~  Owners.mean + Peak.CCU.log +
@@ -93,8 +95,7 @@ model_revenue <- lm(Revenue.log ~  Owners.mean + Peak.CCU.log +
 summary(model_revenue)
 
 ```
-### Interpretation
 
-Key findings include the strong correlation between player engagement (measured by peak concurrent users) and game revenue, emphasizing the importance of investing in games that actively engage players. User feedback, both positive and negative, significantly impacts revenue, highlighting the value of games that generate active community discussion. Additionally, critical acclaim, indicated by Metacritic scores, is a vital factor in a game's profitability. The study also suggests that broader distribution and multiple publishing partners can enhance revenue. Overall, for investors, prioritizing games with high player engagement, active community interaction, critical acclaim, and broad distribution is a strategic approach to maximize returns in the gaming industry.
+Key findings include the strong correlation between player engagement (measured by peak concurrent users) and game revenue, emphasizing the importance of investing in games that actively engage players. User feedback, both positive and negative, significantly impacts revenue, highlighting the value of games that generate active community discussion. Additionally, critical acclaim, indicated by Metacritic scores, is a vital factor in a game's profitability. The result also suggests that publishers with more games in the dataset tend to produce games with more revenue per game, although the evidence is rather weak. Overall, for investors, prioritizing games with high player engagement, active community interaction, critical acclaim, and broad distribution is a strategic approach to maximize returns in the gaming industry.
 
 
