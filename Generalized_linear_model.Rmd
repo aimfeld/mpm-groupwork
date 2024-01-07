@@ -88,18 +88,12 @@ For this model we choose the "quasipoisson" argument, because we assume overdisp
 *Note:* The model automatically removes games with missing values. For example some games do not have a metacritic rating. Because we do not put a special emphasis on the reason for missing values, we just let the model delete them without further manual intervention.
 
 
-#### How good is our model?
-It can be tricky to determine how good our model fits the data, because the quasipoisson family does not have a well defined likelyhood function. It is not really possible to determine values such as AIC, BIC and pseudo R-squared. What we can do is calculate the deviance, lower deviance being a better fit
+**How good is our model?**
+It can be tricky to determine how good our model fits the data, because the quasipoisson family does not have a well defined likelyhood function. It is not really possible to determine values such as AIC, BIC and pseudo R-squared. What we can do is look at the deviance, with a lower deviance indicating a better fit.
 
-```{r}
-# checking how "good" our model fits with the deviance
-null.model <- glm(DLC.count ~ 1, family = "quasipoisson", data = games)
-print(paste("Deviance for dlc.model: ", round(deviance(dlc.model), 3)))
-print(paste("Deviance for null.model: ", round(deviance(null.model), 3)))
-```
+Checking the summary output above we can see that the deviance of our model is 12910, compared to the deviance of the null model of 20453.
 
-As we can see compared to the null model with no predictor variables, our model performs better. Further investigation needs to be done to determine if this is a good overall value.
-
+As we can see compared to the null model with no predictor variables, our model performs better. Further investigation needs to be done to determine if this is a good overall value. One thing to note is that both deviance values are higher than their respective degrees of freedom (~2400), possibly further indicating at overdispersion.
 
 In summary for the investor: Should our observations hold true with other models, potential investors can take away that having DLC in general is not negative. He need not be worried about the bad press surrounding the topic, this is not a general sentiment it seems. DLC when executed well can lead to more success and thus revenue.
 
