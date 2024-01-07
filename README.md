@@ -10,7 +10,7 @@ The [Steam Games Dataset](https://www.kaggle.com/datasets/fronkongames/steam-gam
 
 ## Project Structure
 
-- Report.pdf: The final report.
+- Report.html: The final report.
 - [Report.Rmd](Report.Rmd): The main report file which includes all chapter Rmd files.
 - [Knitr_setup.Rmd](Knitr_setup.Rmd): Setup file for the knitr package.
 - Other Rmd files: The chapter files for the report.
